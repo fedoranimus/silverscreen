@@ -1,6 +1,13 @@
-FROM microsoft/dotnet:1.0.0-core
-WORKDIR /app
-ENV ASPNETCORE_URLS http://*:5000
-EXPOSE 5000
-ENTRYPOINT ["dotnet", "silverscreen.dll"]
+FROM microsoft/dotnet:latest
+
 COPY . /app
+
+WORKDIR /app
+
+RUN ["dotnet", "restore"]
+
+RUN ["dotnet", "build"]
+
+EXPOSE 5000/tcp
+
+CMD ["dotnet", "run", "--server.urls", "http://*:5000"]
