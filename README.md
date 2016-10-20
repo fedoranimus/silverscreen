@@ -21,6 +21,7 @@ Install the latest version of [NodeJS](https://nodejs.org/en/)
 ### Run Project
 1. `cd ..`
 2. `dotnet run`
+3. Open [http://localhost:5000](http://localhost:5000)
 
 
 ### Running a Container (Optional)
