@@ -14,10 +14,10 @@ Seriously, just install NodeJS & NPM
 `npm install -g aurelia-cli`
 
 ### Build UI
-`cd ui`
-`npm install`
-`au build`
+1. `cd ui`
+2. `npm install`
+3. `au build`
 
 ### Run Project
-`cd ..`
-`dotnet run`
+1. `cd ..`
+2. `dotnet run`
