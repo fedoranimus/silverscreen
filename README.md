@@ -3,7 +3,7 @@
 ## Getting Started
 
 ### Install .Net Core
-Install Dotnet Core
+[Install Dotnet Core for your Platform](https://www.microsoft.com/net/core)
 
 Download project dependencies by running `dotnet restore`.
 
@@ -21,3 +21,7 @@ Seriously, just install NodeJS & NPM
 ### Run Project
 1. `cd ..`
 2. `dotnet run`
+
+
+### Running a Container (Optional)
+TODO
