@@ -8,7 +8,7 @@
 Download project dependencies by running `dotnet restore`.
 
 ### Install NodeJS
-Seriously, just install NodeJS & NPM
+Install the latest version of [NodeJS](https://nodejs.org/en/)
 
 ### Install Aurelia-CLI
 `npm install -g aurelia-cli`
