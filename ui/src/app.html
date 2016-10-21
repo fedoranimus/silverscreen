@@ -1,3 +1,10 @@
 <template>
-  <h1>${message}</h1>
+  <require from="resources/elements/nav/navigation"></require>
+  <require from="styles/app.css"></require>
+
+  <navigation router.bind="router"></navigation>
+  
+  <div class="page-host">
+    <router-view></router-view>
+  </div>
 </template>

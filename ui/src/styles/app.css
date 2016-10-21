@@ -1,0 +1,10 @@
+.sidebar {
+    resize: both;
+    overflow: auto;
+    width: 25%;
+    height: 100%;
+}
+
+.page-host {
+    
+}

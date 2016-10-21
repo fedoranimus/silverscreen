@@ -1,11 +1,5 @@
-export class MetadataProviderService {
-    private _serviceName;
-    private _serviceURL;
-    
-    
-    constructor() {
+export class MetadataProviderService {    
+    constructor(public serviceName: string, public serviceURL: string) {
 
     }
-
-
 }
