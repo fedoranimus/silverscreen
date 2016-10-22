@@ -9,14 +9,6 @@
     background-color: $primary;
 }
 
-.nav__item:first-child {
-    margin: 0 0 1em 0;
-}
-
-.nav__item {
-    margin: 1em 0;
-}
-
 .nav__item:hover {
     background-color:$secondary;
     color: $primary-accent;
@@ -31,17 +23,14 @@
     background-image: url(http://placehold.it/50);
     height: 50px;
     width: 50px;
-    margin: 0 auto;
+    margin: 0 auto 5px auto;
 }
 
 .nav__link {
+    //margin: 1em 0;
     display: block;
     color: $text-primary;
-    padding: 8px 16px;
+    padding: 16px 16px;
     text-decoration: none;
     text-align: center;
-}
-
-.nav__link:hover {
-
 }
