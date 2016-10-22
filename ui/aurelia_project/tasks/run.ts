@@ -2,7 +2,7 @@ import * as gulp from 'gulp';
 import * as browserSync from 'browser-sync';
 import * as historyApiFallback from 'connect-history-api-fallback/lib';
 import * as project from '../aurelia.json';
-import build from './build';
+import {buildTask as build} from './build';
 import {CLIOptions} from 'aurelia-cli';
 
 function onChange(path) {

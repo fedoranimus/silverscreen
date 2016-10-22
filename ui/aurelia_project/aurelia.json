@@ -23,10 +23,10 @@
     "source": "src\\**\\*.html"
   },
   "cssProcessor": {
-    "id": "postcss",
-    "displayName": "Post CSS",
-    "fileExtension": ".css",
-    "source": "src\\**\\*.css"
+    "id": "sass",
+    "displayName": "Sass",
+    "fileExtension": ".scss",
+    "source": "src/**/*.scss"
   },
   "editor": {
     "id": "vscode",

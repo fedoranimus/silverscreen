@@ -1,0 +1,16 @@
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
+.sidebar {
+    float: left;
+    width: 10%;
+    min-width: 85px;
+    height: 100%;
+}
+
+.page-host {
+    float: left;
+}

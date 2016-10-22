@@ -15,8 +15,8 @@ define('app',["require", "exports", 'aurelia-framework'], function (require, exp
         App.prototype.configureRouter = function (config, router) {
             config.title = "Silverscreen";
             config.map([
-                { route: '', name: 'root', moduleId: 'features/library/library', nav: true, title: 'Movie Library' },
-                { route: 'wishlist', name: 'wishlist', moduleId: 'features/wishlist/wishlist', nav: true, title: 'Movie Wishlist' },
+                { route: '', name: 'root', moduleId: 'features/library/library', nav: true, title: 'Library' },
+                { route: 'wishlist', name: 'wishlist', moduleId: 'features/wishlist/wishlist', nav: true, title: 'Wishlist' },
                 { route: 'settings', name: 'settings', moduleId: 'features/settings/settings', nav: true, title: 'Settings' },
                 { route: 'system', name: 'system', moduleId: 'features/system/system', nav: true, title: 'System' }
             ]);
@@ -66,13 +66,6 @@ define('infrastructure/IMovie',["require", "exports"], function (require, export
     "use strict";
 });
 
-define('resources/index',["require", "exports"], function (require, exports) {
-    "use strict";
-    function configure(config) {
-    }
-    exports.configure = configure;
-});
-
 define('services/metadataProviderService',["require", "exports"], function (require, exports) {
     "use strict";
     var MetadataProviderService = (function () {
@@ -105,14 +98,11 @@ define('services/omdbProviderService',["require", "exports", './metadataProvider
     exports.OMDBProviderService = OMDBProviderService;
 });
 
-define('features/settings/settings',["require", "exports"], function (require, exports) {
+define('resources/index',["require", "exports"], function (require, exports) {
     "use strict";
-    var Settings = (function () {
-        function Settings() {
-        }
-        return Settings;
-    }());
-    exports.Settings = Settings;
+    function configure(config) {
+    }
+    exports.configure = configure;
 });
 
 define('features/library/library',["require", "exports"], function (require, exports) {
@@ -125,14 +115,14 @@ define('features/library/library',["require", "exports"], function (require, exp
     exports.Library = Library;
 });
 
-define('features/wishlist/wishlist',["require", "exports"], function (require, exports) {
+define('features/settings/settings',["require", "exports"], function (require, exports) {
     "use strict";
-    var Wishlist = (function () {
-        function Wishlist() {
+    var Settings = (function () {
+        function Settings() {
         }
-        return Wishlist;
+        return Settings;
     }());
-    exports.Wishlist = Wishlist;
+    exports.Settings = Settings;
 });
 
 define('features/system/system',["require", "exports"], function (require, exports) {
@@ -143,6 +133,16 @@ define('features/system/system',["require", "exports"], function (require, expor
         return System;
     }());
     exports.System = System;
+});
+
+define('features/wishlist/wishlist',["require", "exports"], function (require, exports) {
+    "use strict";
+    var Wishlist = (function () {
+        function Wishlist() {
+        }
+        return Wishlist;
+    }());
+    exports.Wishlist = Wishlist;
 });
 
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -172,12 +172,13 @@ define('resources/elements/nav/navigation',["require", "exports", 'aurelia-frame
     exports.Navigation = Navigation;
 });
 
-define('text!app.html', ['module'], function(module) { module.exports = "<template>\n  <require from=\"resources/elements/nav/navigation\"></require>\n  <require from=\"styles/app.css\"></require>\n\n  <navigation router.bind=\"router\"></navigation>\n  \n  <div class=\"page-host\">\n    <router-view></router-view>\n  </div>\n</template>\n"; });
-define('text!styles/app.css', ['module'], function(module) { module.exports = ".sidebar {\r\n    resize: both;\r\n    overflow: auto;\r\n    width: 25%;\r\n    height: 100%;\r\n}\r\n\r\n.page-host {\r\n    \r\n}"; });
-define('text!features/library/library.html', ['module'], function(module) { module.exports = "<template>\r\n</template>"; });
-define('text!resources/elements/nav/navigation.css', ['module'], function(module) { module.exports = ".nav {\r\n    list-style-type: none;\r\n    margin: 0;\r\n    padding: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    background-color: #f1f1f1;\r\n}\r\n\r\n.nav__item {\r\n\r\n}\r\n\r\n.nav__link {\r\n    display: block;\r\n    color: #000;\r\n    padding: 8px 16px;\r\n    text-decoration: none;\r\n}\r\n\r\n.nav__link:hover {\r\n    background-color: #555;\r\n    color: white;\r\n}\r\n\r\nnav__item--active {\r\n    background-color: #555;\r\n    color: white;\r\n}"; });
-define('text!features/settings/settings.html', ['module'], function(module) { module.exports = "<template>\r\n</template>"; });
-define('text!features/system/system.html', ['module'], function(module) { module.exports = "<template>\r\n</template>"; });
-define('text!features/wishlist/wishlist.html', ['module'], function(module) { module.exports = "<template>\r\n</template>"; });
-define('text!resources/elements/nav/navigation.html', ['module'], function(module) { module.exports = "<template bindable=\"router\">\r\n    <require from=\"./navigation.css\"></require>\r\n    <ul class=\"nav\">\r\n        <li repeat.for=\"row of router.navigation\" class=\"nav__item ${row.isActive ? 'nav__item--active' : ''}\">\r\n            <a class=\"nav__link\" href.bind=\"row.href\">${row.title}</a>\r\n        </li>\r\n    </ul>\r\n</template>"; });
+define('text!app.html', ['module'], function(module) { module.exports = "<template>\n  <require from=\"resources/elements/nav/navigation\"></require>\n  <require from=\"styles/app.css\"></require>\n\n  <div class=\"sidebar\">\n    <navigation router.bind=\"router\"></navigation>\n  </div>\n  \n  <div class=\"page-host\">\n    <router-view></router-view>\n  </div>\n</template>\n"; });
+define('text!features/library/library.html', ['module'], function(module) { module.exports = "<template>\r\n    Library\r\n</template>"; });
+define('text!styles/app.css', ['module'], function(module) { module.exports = "html, body {\n  height: 100%;\n  width: 100%;\n  margin: 0; }\n\n.sidebar {\n  float: left;\n  width: 10%;\n  min-width: 85px;\n  height: 100%; }\n\n.page-host {\n  float: left; }\n"; });
+define('text!features/settings/settings.html', ['module'], function(module) { module.exports = "<template>\r\n    Settings\r\n</template>"; });
+define('text!styles/colors.css', ['module'], function(module) { module.exports = ""; });
+define('text!features/system/system.html', ['module'], function(module) { module.exports = "<template>\r\n    System\r\n</template>"; });
+define('text!features/wishlist/wishlist.html', ['module'], function(module) { module.exports = "<template>\r\n    Wishlist\r\n</template>"; });
+define('text!resources/elements/nav/navigation.html', ['module'], function(module) { module.exports = "<template bindable=\"router\">\r\n    <require from=\"./navigation.css\"></require>\r\n    <ul class=\"nav\">\r\n        <li repeat.for=\"row of router.navigation\" class=\"nav__item ${row.isActive ? 'nav__item--active' : ''}\">\r\n            \r\n            <a class=\"nav__link\" href.bind=\"row.href\">\r\n                <div class=\"nav__icon\"></div>\r\n                ${row.title}\r\n            </a>\r\n        </li>\r\n    </ul>\r\n</template>"; });
+define('text!resources/elements/nav/navigation.css', ['module'], function(module) { module.exports = ".nav {\n  list-style-type: none;\n  margin: 0;\n  padding: 0;\n  width: 100%;\n  height: 100%;\n  background-color: #323232; }\n\n.nav__item:first-child {\n  margin: 0 0 1em 0; }\n\n.nav__item {\n  margin: 1em 0; }\n\n.nav__item:hover {\n  background-color: #9b9590;\n  color: #bc5a58; }\n\n.nav__item--active {\n  background-color: #9b9590;\n  color: #bc5a58; }\n\n.nav__icon {\n  background-image: url(http://placehold.it/50);\n  height: 50px;\n  width: 50px;\n  margin: 0 auto; }\n\n.nav__link {\n  display: block;\n  color: #ffffff;\n  padding: 8px 16px;\n  text-decoration: none;\n  text-align: center; }\n"; });
 //# sourceMappingURL=app-bundle.js.map
