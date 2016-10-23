@@ -12,7 +12,11 @@ import environment from './environment';
 export function configure(aurelia: Aurelia) {
   aurelia.use
     .standardConfiguration()
-    .feature('resources');
+    .feature('resources')
+    .plugin('aurelia-api', config => {
+      config.registerEndpoint('api', '/api');
+      config.setDefaultEndpoint('api');
+  });
 
   if (environment.debug) {
     aurelia.use.developmentLogging();
