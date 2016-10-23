@@ -8,10 +8,11 @@
   },
   "license": "MIT",
   "dependencies": {
+    "aurelia-animator-css": "^1.0.0",
     "aurelia-bootstrapper": "^1.0.0",
     "aurelia-fetch-client": "^1.0.0",
-    "aurelia-animator-css": "^1.0.0",
-    "bluebird": "^3.4.1"
+    "bluebird": "^3.4.1",
+    "font-awesome": "^4.6.3"
   },
   "peerDependencies": {},
   "devDependencies": {
@@ -39,6 +40,7 @@
     "karma-typescript-preprocessor": "^0.2.1",
     "minimatch": "^3.0.2",
     "postcss-easy-import": "^1.0.1",
+    "postcss-scss": "^0.3.1",
     "postcss-simple-vars": "^3.0.0",
     "through2": "^2.0.1",
     "tslint": "^3.11.0",
