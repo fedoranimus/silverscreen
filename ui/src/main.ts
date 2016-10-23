@@ -15,6 +15,7 @@ export function configure(aurelia: Aurelia) {
     .feature('resources')
     .plugin('aurelia-api', config => {
       config.registerEndpoint('api', '/api');
+      config.regsterEndpoint('library', '/api/library');
       config.setDefaultEndpoint('api');
   });
 

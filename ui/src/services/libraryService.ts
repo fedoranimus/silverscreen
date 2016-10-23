@@ -6,7 +6,7 @@ export class LibraryService {
     private movieEndpoint = null; //of type Rest|null?
 
     constructor(private config: Config) {
-        this.movieEndpoint = config.getEndpoint('api');
+        this.movieEndpoint = config.getEndpoint('library');
     }
 
     getAllMovies(): Promise<IMovie[]> {
@@ -14,10 +14,10 @@ export class LibraryService {
     }
 
     getMovie(id: string): Promise<IMovie> {
-        return this.movieEndpoint.findOne('movie', id);
+        return this.movieEndpoint.findOne('movies', id);
     }
 
     deleteMovie(id: string): Promise<void> {
-        return this.movieEndpoint.destroyOne('movie', id);
+        return this.movieEndpoint.destroyOne('movies', id);
     }
 }
