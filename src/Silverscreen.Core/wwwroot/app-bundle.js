@@ -77,23 +77,34 @@ define('resources/index',["require", "exports"], function (require, exports) {
     exports.configure = configure;
 });
 
-define('services/libraryService',["require", "exports"], function (require, exports) {
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+define('services/libraryService',["require", "exports", 'aurelia-framework', 'aurelia-api'], function (require, exports, aurelia_framework_1, aurelia_api_1) {
     "use strict";
     var LibraryService = (function () {
-        function LibraryService(config) {
-            this.config = config;
-            this.movieEndpoint = null;
-            this.movieEndpoint = config.getEndpoint('library');
+        function LibraryService(endpoint) {
+            this.endpoint = endpoint;
         }
         LibraryService.prototype.getAllMovies = function () {
-            return this.movieEndpoint.find('movies');
+            return this.endpoint.find('movies');
         };
         LibraryService.prototype.getMovie = function (id) {
-            return this.movieEndpoint.findOne('movies', id);
+            return this.endpoint.findOne('movies', id);
         };
         LibraryService.prototype.deleteMovie = function (id) {
-            return this.movieEndpoint.destroyOne('movies', id);
+            return this.endpoint.destroyOne('movies', id);
         };
+        LibraryService = __decorate([
+            aurelia_framework_1.inject(aurelia_api_1.Endpoint.of('library')), 
+            __metadata('design:paramtypes', [aurelia_api_1.Rest])
+        ], LibraryService);
         return LibraryService;
     }());
     exports.LibraryService = LibraryService;
