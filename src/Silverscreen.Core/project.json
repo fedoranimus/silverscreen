@@ -4,6 +4,8 @@
       "version": "1.0.1",
       "type": "platform"
     },
+    "Silverscreen.Library": "1.0.0-*",
+    "Silverscreen.Model": "1.0.0-*",
     "Microsoft.AspNetCore.Diagnostics": "1.0.0",
     "Microsoft.AspNetCore.Server.IISIntegration": "1.0.0",
     "Microsoft.AspNetCore.Server.Kestrel": "1.0.1",
@@ -53,6 +55,6 @@
   },
 
   "tooling": {
-    "defaultNamespace": "EmptyWebApplication"
+    "defaultNamespace": "Silverscreen.Core"
   }
 }
