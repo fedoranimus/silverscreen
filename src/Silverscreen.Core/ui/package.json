@@ -1,6 +1,6 @@
 {
   "name": "ui",
-  "description": "An Aurelia client application.",
+  "description": "User Interface for Silverscreen",
   "version": "0.1.0",
   "repository": {
     "type": "???",
@@ -13,11 +13,12 @@
     "aurelia-bootstrapper": "^1.0.0",
     "aurelia-fetch-client": "^1.0.0",
     "bluebird": "^3.4.1",
+    "extend": "^3.0.0",
     "font-awesome": "^4.6.3"
   },
   "peerDependencies": {},
   "devDependencies": {
-    "aurelia-cli": "^0.18.0",
+    "aurelia-cli": "^0.21.0",
     "aurelia-testing": "^1.0.0-beta.2.0.0",
     "aurelia-tools": "^0.2.2",
     "autoprefixer": "^6.3.6",

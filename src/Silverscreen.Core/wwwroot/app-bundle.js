@@ -50,7 +50,11 @@ define('main',["require", "exports", './environment'], function (require, export
     function configure(aurelia) {
         aurelia.use
             .standardConfiguration()
-            .feature('resources');
+            .feature('resources')
+            .plugin('aurelia-api', function (config) {
+            config.registerEndpoint('api', '/api');
+            config.registerEndpoint('library', '/api/library');
+        });
         if (environment_1.default.debug) {
             aurelia.use.developmentLogging();
         }
@@ -71,6 +75,28 @@ define('resources/index',["require", "exports"], function (require, exports) {
     function configure(config) {
     }
     exports.configure = configure;
+});
+
+define('services/libraryService',["require", "exports"], function (require, exports) {
+    "use strict";
+    var LibraryService = (function () {
+        function LibraryService(config) {
+            this.config = config;
+            this.movieEndpoint = null;
+            this.movieEndpoint = config.getEndpoint('library');
+        }
+        LibraryService.prototype.getAllMovies = function () {
+            return this.movieEndpoint.find('movies');
+        };
+        LibraryService.prototype.getMovie = function (id) {
+            return this.movieEndpoint.findOne('movies', id);
+        };
+        LibraryService.prototype.deleteMovie = function (id) {
+            return this.movieEndpoint.destroyOne('movies', id);
+        };
+        return LibraryService;
+    }());
+    exports.LibraryService = LibraryService;
 });
 
 define('services/metadataProviderService',["require", "exports"], function (require, exports) {
@@ -108,11 +134,25 @@ define('services/omdbProviderService',["require", "exports", './metadataProvider
 define('features/library/library',["require", "exports"], function (require, exports) {
     "use strict";
     var Library = (function () {
-        function Library() {
+        function Library(libraryService) {
+            this.libraryService = libraryService;
+            this.movies = [];
         }
+        Library.prototype.attached = function () {
+        };
         return Library;
     }());
     exports.Library = Library;
+});
+
+define('features/wishlist/wishlist',["require", "exports"], function (require, exports) {
+    "use strict";
+    var Wishlist = (function () {
+        function Wishlist() {
+        }
+        return Wishlist;
+    }());
+    exports.Wishlist = Wishlist;
 });
 
 define('features/settings/settings',["require", "exports"], function (require, exports) {
@@ -133,16 +173,6 @@ define('features/system/system',["require", "exports"], function (require, expor
         return System;
     }());
     exports.System = System;
-});
-
-define('features/wishlist/wishlist',["require", "exports"], function (require, exports) {
-    "use strict";
-    var Wishlist = (function () {
-        function Wishlist() {
-        }
-        return Wishlist;
-    }());
-    exports.Wishlist = Wishlist;
 });
 
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -173,12 +203,12 @@ define('resources/elements/nav/navigation',["require", "exports", 'aurelia-frame
 });
 
 define('text!app.html', ['module'], function(module) { module.exports = "<template>\n  <require from=\"resources/elements/nav/navigation\"></require>\n  <require from=\"styles/app.css\"></require>\n\n  <div class=\"sidebar\">\n    <div class=\"logo\"></div>\n    <navigation router.bind=\"router\"></navigation>\n  </div>\n  \n  <div class=\"page-host\">\n    <router-view></router-view>\n  </div>\n</template>\n"; });
-define('text!features/settings/settings.html', ['module'], function(module) { module.exports = "<template>\r\n    Settings\r\n</template>"; });
-define('text!features/library/library.html', ['module'], function(module) { module.exports = "<template>\r\n    Library\r\n</template>"; });
-define('text!features/wishlist/wishlist.html', ['module'], function(module) { module.exports = "<template>\r\n    Wishlist\r\n</template>"; });
-define('text!features/system/system.html', ['module'], function(module) { module.exports = "<template>\r\n    System\r\n</template>"; });
-define('text!resources/elements/nav/navigation.html', ['module'], function(module) { module.exports = "<template bindable=\"router\">\r\n    <require from=\"./navigation.css\"></require>\r\n    <ul class=\"nav\">\r\n        <li repeat.for=\"row of router.navigation\" class=\"nav__item ${row.isActive ? 'nav__item--active' : ''}\">\r\n            \r\n            <a class=\"nav__link\" href.bind=\"row.href\">\r\n                <div class=\"nav__icon\"></div>\r\n                ${row.title}\r\n            </a>\r\n        </li>\r\n    </ul>\r\n</template>"; });
+define('text!features/library/library.html', ['module'], function(module) { module.exports = "<template>\r\n    Library\r\n    <ul>\r\n        <li repeat.for=\"movie of movies\">\r\n            ${movie.title}\r\n        </li>\r\n    </ul>\r\n</template>"; });
 define('text!styles/app.css', ['module'], function(module) { module.exports = "html, body {\n  height: 100%;\n  width: 100%;\n  margin: 0; }\n\n.sidebar {\n  float: left;\n  width: 10%;\n  min-width: 85px;\n  height: 100%;\n  background-color: #323232; }\n\n.logo {\n  background-image: url(http://placehold.it/50);\n  height: 50px;\n  width: 50px;\n  margin: 10px auto; }\n\n.page-host {\n  float: left; }\n"; });
 define('text!styles/colors.css', ['module'], function(module) { module.exports = ""; });
+define('text!features/settings/settings.html', ['module'], function(module) { module.exports = "<template>\r\n    Settings\r\n</template>"; });
+define('text!features/wishlist/wishlist.html', ['module'], function(module) { module.exports = "<template>\r\n    Wishlist\r\n</template>"; });
 define('text!resources/elements/nav/navigation.css', ['module'], function(module) { module.exports = ".nav {\n  list-style-type: none;\n  margin: 0;\n  padding: 0;\n  width: 100%;\n  height: calc(100% - 70px); }\n\n.nav__item:hover {\n  background-color: #9b9590;\n  color: #bc5a58; }\n\n.nav__item--active {\n  background-color: #9b9590;\n  color: #bc5a58; }\n\n.nav__icon {\n  background-image: url(http://placehold.it/50);\n  height: 50px;\n  width: 50px;\n  margin: 0 auto 5px auto; }\n\n.nav__link {\n  display: block;\n  color: #ffffff;\n  padding: 16px 16px;\n  text-decoration: none;\n  text-align: center; }\n"; });
+define('text!features/system/system.html', ['module'], function(module) { module.exports = "<template>\r\n    System\r\n</template>"; });
+define('text!resources/elements/nav/navigation.html', ['module'], function(module) { module.exports = "<template bindable=\"router\">\r\n    <require from=\"./navigation.css\"></require>\r\n    <ul class=\"nav\">\r\n        <li repeat.for=\"row of router.navigation\" class=\"nav__item ${row.isActive ? 'nav__item--active' : ''}\">\r\n            \r\n            <a class=\"nav__link\" href.bind=\"row.href\">\r\n                <div class=\"nav__icon\"></div>\r\n                ${row.title}\r\n            </a>\r\n        </li>\r\n    </ul>\r\n</template>"; });
 //# sourceMappingURL=app-bundle.js.map

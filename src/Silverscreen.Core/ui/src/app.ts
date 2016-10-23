@@ -1,5 +1,5 @@
 import {Router, RouterConfiguration} from 'aurelia-router';
-import {autoinject, Aurelia} from 'aurelia-framework';
+import {autoinject} from 'aurelia-framework';
 
 @autoinject
 export class App {

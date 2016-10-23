@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 
-namespace EmptyWebApplication
+namespace Silverscreen.Core
 {
     public class Startup
     {

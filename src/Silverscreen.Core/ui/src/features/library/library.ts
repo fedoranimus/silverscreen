@@ -9,12 +9,12 @@ export class Library {
     }
 
     attached() {
-        this.libraryService.getAllMovies()
-        .then( movies => {
-            this.movies = movies;
-        })
-        .catch(e => {
-            console.error(e);
-        });
+        // this.libraryService.getAllMovies()
+        // .then( movies => {
+        //     this.movies = movies;
+        // })
+        // .catch(e => {
+        //     console.error(e);
+        // });
     }
 }
