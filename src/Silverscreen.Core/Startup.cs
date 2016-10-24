@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Silverscreen.Library;
 
 
 namespace Silverscreen.Core
@@ -18,6 +19,9 @@ namespace Silverscreen.Core
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            var libMgr = new LibraryManager();
+            libMgr.ScanLibrary();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -15,7 +15,7 @@ namespace Silverscreen.Core.Controllers {
             return new OkObjectResult(1);
         }
 
-        [HttpGetAttribute("/movies/{id}")]
+        [HttpGet("/movies/{id}")]
         public IActionResult Get(int id)
         {
             //Movie _movie = _movieRepository.GetSingle(m => m.Id == id);
@@ -37,5 +37,13 @@ namespace Silverscreen.Core.Controllers {
                 return NotFound();
             }
         }
+
+        [HttpPost("/path")]
+        public IActionResult Create([FromBody] string libraryPath) {
+            return new OkObjectResult(libraryPath);
+        }
+
+        //delete path
+
     }
 }
