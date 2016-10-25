@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Silverscreen.Library {
     public class LibraryManager {
@@ -44,7 +45,7 @@ namespace Silverscreen.Library {
 
         private async void addMovie(string directory) {
             //parse title and year from directory.FullName
-            var movieData = ParseMovieDirectoryName(directory);
+            var movieData = FindVideo(directory);
 
             //get metadata from OMDB based on title and year 
             var movie = await FetchMovieMetadata(movieData.Title, movieData.Year);
@@ -53,14 +54,28 @@ namespace Silverscreen.Library {
             library.Movies.Add(movie);
         }
 
-        public MovieTitle ParseMovieDirectoryName(string directory) {
-            var directoryIdx = directory.LastIndexOf('\\'); //get index where the directory ends
-            var movieTitleString = directory.Substring(directoryIdx + 1); //get all text after this
+        public MovieTitle FindVideo(string directory) {
+            //var directoryIdx = directory.LastIndexOf('\\'); //get index where the directory ends
+            //var movieTitleString = directory.Substring(directoryIdx + 1); //get all text after this
 
-            //separate title from year
+            var ext = new List<string>{"mkv", "avi"};
+            var videoFile = new DirectoryInfo(directory).EnumerateFiles("*.*", SearchOption.AllDirectories) //enumerate all files
+                .Where(v => ext.Contains(Path.GetExtension(v.Extension))) //filter by their extensions
+                .OrderByDescending(f => f.Length) // order by their size
+                .FirstOrDefault(); // get the largest (or null)
+
+            if(videoFile != null) {
+                return ParseMovieName(videoFile.Name); //separate title from year
+            } else {
+                Console.WriteLine("No files in {0}", directory);
+                return null;
+            }
+        }
+
+        public MovieTitle ParseMovieName(string fileName) {
             string titlePattern = @"^(?<Title>.+)\((?<Year>\d+)\)$";
 
-            Match match = Regex.Match(movieTitleString, titlePattern);
+            Match match = Regex.Match(fileName, titlePattern);
 
             var movieTitleDirty = match.Groups["Title"].Value.Trim().Split(',');
             var movieTitle = movieTitleDirty[0]; //would rather do this via regex
@@ -68,6 +83,7 @@ namespace Silverscreen.Library {
             if(movieTitleDirty.Length > 1) {
                 var moviePrefix = movieTitleDirty[1].Trim(); // ", The" more than likely
             }
+            
             var movieYear = match.Groups["Year"].Value;            
 
             return new MovieTitle() {

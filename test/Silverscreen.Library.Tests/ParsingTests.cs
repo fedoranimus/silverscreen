@@ -14,8 +14,8 @@ namespace Silverscreen.Library.Tests
         [InlineData()]        
         public void ParseDirectoryWithThe()
         {
-            string directory = @"\\Plex\Movies\Legend of Tarzan, The (2016)";
-            MovieTitle movieTitle = _libraryManager.ParseMovieDirectoryName(directory);
+            string directory = @"Legend of Tarzan, The (2016)";
+            MovieTitle movieTitle = _libraryManager.ParseMovieName(directory);
 
             Assert.Equal(movieTitle.Title, "Legend of Tarzan");
         }
@@ -24,8 +24,8 @@ namespace Silverscreen.Library.Tests
         [InlineData()]        
         public void ParseDirectoryWithTheYear()
         {
-            string directory = @"\\Plex\Movies\Legend of Tarzan, The (2016)";
-            MovieTitle movieTitle = _libraryManager.ParseMovieDirectoryName(directory);
+            string directory = @"Legend of Tarzan, The (2016)";
+            MovieTitle movieTitle = _libraryManager.ParseMovieName(directory);
 
             Assert.Equal(movieTitle.Year, "2016");
         }
@@ -33,8 +33,8 @@ namespace Silverscreen.Library.Tests
         [Fact]
         public void ParseDirectorySimple()
         {
-            string directory = @"\\Plex\Movies\Imperium (2016)";
-            MovieTitle movieTitle = _libraryManager.ParseMovieDirectoryName(directory);
+            string directory = @"Imperium (2016)";
+            MovieTitle movieTitle = _libraryManager.ParseMovieName(directory);
 
             Assert.Equal(movieTitle.Title, "Imperium");
         }
@@ -42,8 +42,8 @@ namespace Silverscreen.Library.Tests
         [Fact]
         public void ParseDirectorySimpleYear()
         {
-            string directory = @"\\Plex\Movies\Imperium (2016)";
-            MovieTitle movieTitle = _libraryManager.ParseMovieDirectoryName(directory);
+            string directory = @"Imperium (2016)";
+            MovieTitle movieTitle = _libraryManager.ParseMovieName(directory);
 
             Assert.Equal(movieTitle.Year, "2016");
         }

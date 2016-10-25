@@ -1,4 +1,18 @@
+using System.ComponentModel;
+
 namespace Silverscreen.Model {
+
+    public enum QualityType {
+        
+        //[Description("480p")]
+        SD = 0,
+        //[Description("720p")]
+        HD = 1,
+        //[Description("1080p")]
+        FullHD = 2,
+        //[Description("4k")]
+        QuadHD = 3,
+    }
     public class Movie : IEntityBase
     {
         public Movie() {
@@ -13,5 +27,8 @@ namespace Silverscreen.Model {
         public string Poster { get; set; }
 
         public string Rating { get; set; }
+
+        public QualityType Quality { get; set; }
+
     }
 }
