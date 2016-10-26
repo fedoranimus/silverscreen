@@ -4,14 +4,12 @@ using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Net.Http;
-using Newtonsoft.Json;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Silverscreen.OMDb;
 
 namespace Silverscreen.Library {
     public class LibraryManager {
-
-        private const string OmbdUrl = "http://www.omdbapi.com/";
         Library library;
         public LibraryManager() {
             library = new Library();
@@ -31,24 +29,24 @@ namespace Silverscreen.Library {
         }
 
         public void ScanLibrary() {
+            OmdbClient omdbClient = new OmdbClient();
             DirectoryInfo DirInfo = new DirectoryInfo(@"\\Plex\Movies\");
 
             var directories = DirInfo.EnumerateDirectories();
             
             foreach(var d in directories) {
                 Console.WriteLine("{0}", d.FullName);
-                addMovie(d.FullName);
-
+                addMovie(omdbClient, d.FullName);
             } 
             Console.WriteLine("Number of Directories is {0}", directories.Count());
         }
 
-        private async void addMovie(string directory) {
+        private async void addMovie(OmdbClient omdbClient, string directory) {
             //parse title and year from directory.FullName
             var movieData = FindVideo(directory);
 
             //get metadata from OMDB based on title and year 
-            var movie = await FetchMovieMetadata(movieData.Title, movieData.Year);
+            var movie = await FetchMovieMetadata(omdbClient, movieData.Title, movieData.Year);
 
             //add new Movie to library
             library.Movies.Add(movie);
@@ -58,8 +56,8 @@ namespace Silverscreen.Library {
             //var directoryIdx = directory.LastIndexOf('\\'); //get index where the directory ends
             //var movieTitleString = directory.Substring(directoryIdx + 1); //get all text after this
 
-            var ext = new List<string>{"mkv", "avi"};
-            var videoFile = new DirectoryInfo(directory).EnumerateFiles("*.*", SearchOption.AllDirectories) //enumerate all files
+            var ext = new List<string>{".mkv", ".avi"}; //put this in a configuration area
+            var videoFile = new DirectoryInfo(directory).EnumerateFiles("*", SearchOption.AllDirectories) //enumerate all files
                 .Where(v => ext.Contains(Path.GetExtension(v.Extension))) //filter by their extensions
                 .OrderByDescending(f => f.Length) // order by their size
                 .FirstOrDefault(); // get the largest (or null)
@@ -92,25 +90,17 @@ namespace Silverscreen.Library {
             };
         }
 
-        private async Task<Movie> FetchMovieMetadata(string title, string year) {
-            string query = String.Format("?t={0}?y={1}", title, year);
+        private async Task<Movie> FetchMovieMetadata(OmdbClient omdbClient, string title, string year) {
+            var metadata = await omdbClient.GetMetadata(title, year);
 
-
-            using(var client = new HttpClient()) {
-                using(var response = await client.GetAsync(new Uri(OmbdUrl))) {
-                    string result = await response.Content.ReadAsStringAsync();
-                    var metadata = JsonConvert.DeserializeObject<OmdbResponse>(result);
-
-                    return new Movie() {
-                                    Title = title,
-                                    Year = year,
-                                    Plot = metadata.Plot,
-                                    ImdbId = metadata.imdbID,
-                                    Poster = metadata.Poster,
-                                    Rating = metadata.imdbRating
-                                };
-                }
-            }  
+            return new Movie() {
+                Title = title,
+                Year = Convert.ToInt32(year),
+                Plot = metadata.Plot,
+                ImdbId = metadata.imdbID,
+                Poster = metadata.Poster,
+                Rating = metadata.imdbRating
+            };
         }
     }
 }
