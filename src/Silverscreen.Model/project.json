@@ -12,6 +12,7 @@
         }
     },
     "buildOptions": {
-    "preserveCompilationContext": true
+        "preserveCompilationContext": true,
+        "debugType": "portable"
   }
 }

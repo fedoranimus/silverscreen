@@ -18,5 +18,8 @@
                 }
             }
         }
+    },
+    "buildOptions": {
+        "debugType": "portable"
     }
 }

@@ -70,28 +70,43 @@ namespace Silverscreen.Library {
             }
         }
 
-        public MovieTitle ParseMovieName(string fileName) {
-            string titlePattern = @"^(?<Title>.+)\((?<Year>\d+)\)$";
+        public MovieTitle ParseMovieName(string fullFileName) {
+            var fileName = Path.GetFileNameWithoutExtension(fullFileName);
+            var fileExt = Path.GetExtension(fullFileName);
+
+            string titlePattern = @"^(?<Title>.+?)(\((?<Year>\d+?)\))?$";
 
             Match match = Regex.Match(fileName, titlePattern);
 
             var movieTitleDirty = match.Groups["Title"].Value.Trim().Split(',');
-            var movieTitle = movieTitleDirty[0]; //would rather do this via regex
+            var movieTitle = "";
 
             if(movieTitleDirty.Length > 1) {
-                var moviePrefix = movieTitleDirty[1].Trim(); // ", The" more than likely
+                var moviePrefix = movieTitleDirty.Last().Trim(); // ", The" more than likely
+                if(moviePrefix.ToLowerInvariant().Contains("the")) {
+                    movieTitle = movieTitleDirty[0]; //would rather do this via regex
+                } else {
+                    movieTitle = match.Groups["Title"].Value.Trim(); 
+                }
+            } else {
+                movieTitle = match.Groups["Title"].Value.Trim(); 
             }
             
             var movieYear = match.Groups["Year"].Value;            
 
             return new MovieTitle() {
                 Title = movieTitle,
-                Year = movieYear
+                Year = movieYear,
+                Extension = fileExt
             };
         }
 
         private async Task<Movie> FetchMovieMetadata(OmdbClient omdbClient, string title, string year) {
-            var metadata = await omdbClient.GetMetadata(title, year);
+            Metadata metadata = null;
+            if(year == "")
+                metadata = await omdbClient.GetMetadata(title);
+            else 
+                metadata = await omdbClient.GetMetadata(title, year);
 
             return new Movie() {
                 Title = title,
