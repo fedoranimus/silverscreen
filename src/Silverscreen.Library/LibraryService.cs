@@ -3,29 +3,34 @@ using System.IO;
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Silverscreen.OMDb;
 
 namespace Silverscreen.Library {
-    public class LibraryManager {
-        Library library;
-        public LibraryManager() {
-            library = new Library();
+    public class LibraryService : ILibraryService {
+        private readonly LibraryContext _libraryContext;
+        public LibraryService(LibraryContext libraryContext) {
+            _libraryContext = libraryContext;
         }
 
-        public Library getLibrary(){
-            return library; //maybe just return metadata?
+        public LibraryContext getLibrary(){
+            return _libraryContext; //maybe just return metadata?
         }
 
-        public Movie getItem(int id) {
-            return library.Movies.Find(m => m.Id == id);
+        public List<Movie> getMovies() {
+            return _libraryContext.Movies.ToList();
         }
 
-        public void addPath(string path) {
-            library.Paths.Add(path);
-            //rerun
+        public Movie getItem(int id)
+        {
+            return _libraryContext.Movies.Where(m => m.Id == id).FirstOrDefault();
+        }
+
+        public void addDirectory(string path) {
+            _libraryContext.Directories.Add(path);
+            //rerun scan
+            ScanLibrary();
         }
 
         public void ScanLibrary() {
@@ -49,7 +54,7 @@ namespace Silverscreen.Library {
             var movie = await FetchMovieMetadata(omdbClient, movieData.Title, movieData.Year);
 
             //add new Movie to library
-            library.Movies.Add(movie);
+            _libraryContext.Movies.Add(movie);
         }
 
         public MovieTitle FindVideo(string directory) {

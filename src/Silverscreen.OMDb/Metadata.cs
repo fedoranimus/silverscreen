@@ -1,5 +1,3 @@
-using System;
-
 namespace Silverscreen.OMDb {
     public class Metadata {
             public string Title { get; set; }

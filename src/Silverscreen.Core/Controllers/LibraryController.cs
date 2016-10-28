@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Silverscreen.Model;
 
@@ -9,10 +5,23 @@ namespace Silverscreen.Core.Controllers {
     [Route("api/[controller]")]
     public class LibraryController : Controller
     {
-        [HttpGet("/movies")]
-        public IActionResult Get() {
+        private readonly ILibraryService _service;
 
-            return new OkObjectResult(1);
+        public LibraryController(ILibraryService service)
+        {
+            _service = service;
+        }
+
+        [HttpGet("/movies")]
+        public IActionResult Get() 
+        {
+            return new OkObjectResult(_service.getMovies());
+        }
+
+        [HttpGet("/movies/scan")]
+        public void Scan()
+        {
+            _service.ScanLibrary();
         }
 
         [HttpGet("/movies/{id}")]
@@ -38,9 +47,9 @@ namespace Silverscreen.Core.Controllers {
             }
         }
 
-        [HttpPost("/path")]
-        public IActionResult Create([FromBody] string libraryPath) {
-            return new OkObjectResult(libraryPath);
+        [HttpPost("/movies/directory")]
+        public void Create([FromBody] string directory) {
+            _service.addDirectory(directory);
         }
 
         //delete path
