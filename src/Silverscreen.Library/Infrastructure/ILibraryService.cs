@@ -1,9 +1,12 @@
 using System.Collections.Generic;
 using Silverscreen.Model;
+using System.Threading.Tasks;
 public interface ILibraryService {
-    List<Movie> getMovies();
+    List<Movie> GetMovies();
     void ScanLibrary();
-    void addDirectory(string path);
-    Movie getItem(int id);
+    Task<Directory> AddDirectory(string path);
+    Movie GetItem(int id);
+
+    List<string> GetDirectories();
 
 }

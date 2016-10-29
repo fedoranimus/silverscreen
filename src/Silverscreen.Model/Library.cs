@@ -1,15 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 
 namespace Silverscreen.Model {
-    public class LibraryContext : DbContext, IEntityBase  {
+    public class LibraryContext : DbContext  {
         public LibraryContext (DbContextOptions<LibraryContext> options) : base(options) 
         {
 
         }
-
-
-        public int Id { get; set; }
-        public DbSet<string> Directories { get; set; }
+        public DbSet<Directory> Directories { get; set; }
         public DbSet<Movie> Movies { get; set;}
     }
 }

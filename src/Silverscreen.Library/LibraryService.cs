@@ -14,39 +14,49 @@ namespace Silverscreen.Library {
             _libraryContext = libraryContext;
         }
 
-        public LibraryContext getLibrary(){
+        public LibraryContext GetLibrary(){
             return _libraryContext; //maybe just return metadata?
         }
 
-        public List<Movie> getMovies() {
+        public List<Movie> GetMovies() {
             return _libraryContext.Movies.ToList();
         }
 
-        public Movie getItem(int id)
+        public Movie GetItem(int id)
         {
             return _libraryContext.Movies.Where(m => m.Id == id).FirstOrDefault();
         }
 
-        public void addDirectory(string path) {
-            _libraryContext.Directories.Add(path);
-            //rerun scan
-            ScanLibrary();
+        public async Task<Silverscreen.Model.Directory> AddDirectory(string path) {
+            var directory = new Silverscreen.Model.Directory(path);
+            Console.WriteLine("Adding {0} to {1}", path, directory.DirectoryPath);
+            _libraryContext.Directories.Add(directory);
+            await _libraryContext.SaveChangesAsync();
+            return directory;
         }
 
         public void ScanLibrary() {
-            OmdbClient omdbClient = new OmdbClient();
-            DirectoryInfo DirInfo = new DirectoryInfo(@"\\Plex\Movies\");
+            foreach(var directory in _libraryContext.Directories) {
+                Console.WriteLine("Scanning {0}...", directory);
+                OmdbClient omdbClient = new OmdbClient();
+                DirectoryInfo DirInfo = new DirectoryInfo(directory.DirectoryPath);
 
-            var directories = DirInfo.EnumerateDirectories();
-            
-            foreach(var d in directories) {
-                Console.WriteLine("{0}", d.FullName);
-                addMovie(omdbClient, d.FullName);
-            } 
-            Console.WriteLine("Number of Directories is {0}", directories.Count());
+                var directories = DirInfo.EnumerateDirectories();
+                
+                foreach(var d in directories) {
+                    Console.WriteLine("Parsing movie: {0}...", d.FullName);
+                    AddMovie(omdbClient, d.FullName);
+                } 
+                Console.WriteLine("Number of subdirectories is {0}", directories.Count());
+                Console.WriteLine("{0} scan complete.", directory);
+            }
         }
 
-        private async void addMovie(OmdbClient omdbClient, string directory) {
+        public List<string> GetDirectories() {
+            return _libraryContext.Directories.Select(d => d.DirectoryPath).ToList();
+        }
+
+        private async void AddMovie(OmdbClient omdbClient, string directory) {
             //parse title and year from directory.FullName
             var movieData = FindVideo(directory);
 
@@ -55,6 +65,7 @@ namespace Silverscreen.Library {
 
             //add new Movie to library
             _libraryContext.Movies.Add(movie);
+            await _libraryContext.SaveChangesAsync();
         }
 
         public MovieTitle FindVideo(string directory) {

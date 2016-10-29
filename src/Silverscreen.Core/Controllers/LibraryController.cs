@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Mvc;
 using Silverscreen.Model;
 
@@ -15,7 +16,7 @@ namespace Silverscreen.Core.Controllers {
         [HttpGet("/movies")]
         public IActionResult Get() 
         {
-            return new OkObjectResult(_service.getMovies());
+            return new OkObjectResult(_service.GetMovies());
         }
 
         [HttpGet("/movies/scan")]
@@ -25,7 +26,7 @@ namespace Silverscreen.Core.Controllers {
         }
 
         [HttpGet("/movies/{id}")]
-        public IActionResult Get(int id)
+        public IActionResult GetMovie(int id)
         {
             //Movie _movie = _movieRepository.GetSingle(m => m.Id == id);
             Movie _movie = new Movie() {
@@ -47,9 +48,21 @@ namespace Silverscreen.Core.Controllers {
             }
         }
 
-        [HttpPost("/movies/directory")]
-        public void Create([FromBody] string directory) {
-            _service.addDirectory(directory);
+        [HttpPostAttribute("/movies/directories")]
+        public IActionResult AddDirectory([FromBody]string path) {
+            Console.WriteLine("Hit AddDirectory");
+            if(path == null) {
+                return BadRequest();
+            }
+            
+            Console.WriteLine(path);
+            var result = _service.AddDirectory(path);
+            return new CreatedAtRouteResult("GetDirectory", new { id = result.Id }, path);
+        }
+
+        [HttpGetAttribute("/movies/directories")]
+        public IActionResult GetDirectories() {
+            return new OkObjectResult(_service.GetDirectories());
         }
 
         //delete path
