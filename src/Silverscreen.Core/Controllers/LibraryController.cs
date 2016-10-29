@@ -1,6 +1,7 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
 using Silverscreen.Model;
+using Newtonsoft.Json.Linq;
 
 namespace Silverscreen.Core.Controllers {
     [Route("api/[controller]")]
@@ -49,21 +50,28 @@ namespace Silverscreen.Core.Controllers {
         }
 
         [HttpPostAttribute("/movies/directories")]
-        public IActionResult AddDirectory([FromBody]string path) {
+        public IActionResult AddDirectory([FromBody] JToken directoryPath) {
             Console.WriteLine("Hit AddDirectory");
+            string path = directoryPath.ToString();
             if(path == null) {
                 return BadRequest();
             }
             
             Console.WriteLine(path);
             var result = _service.AddDirectory(path);
-            return new CreatedAtRouteResult("GetDirectory", new { id = result.Id }, path);
+            return new OkObjectResult(directoryPath.ToString());
+            //return new CreatedAtRouteResult("GetDirectory", new { id = result.Id }, path);
         }
 
         [HttpGetAttribute("/movies/directories")]
         public IActionResult GetDirectories() {
             return new OkObjectResult(_service.GetDirectories());
         }
+
+        // [HttpGetAttribute("/movies/directories/{id}")]
+        // public IActionResult GetDirectory(int id) {
+        //     return OkObjectResult(_service.GetDirectory(id));
+        // }
 
         //delete path
 
