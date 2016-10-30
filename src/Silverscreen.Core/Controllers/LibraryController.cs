@@ -50,16 +50,16 @@ namespace Silverscreen.Core.Controllers {
         }
 
         [HttpPostAttribute("/movies/directories")]
-        public IActionResult AddDirectory([FromBody] JToken directoryPath) {
+        public IActionResult AddDirectory([FromBody] DirectoryContract directory) {
             Console.WriteLine("Hit AddDirectory");
-            string path = directoryPath.ToString();
+            string path = directory.directoryPath;
             if(path == null) {
                 return BadRequest();
             }
             
             Console.WriteLine(path);
             var result = _service.AddDirectory(path);
-            return new OkObjectResult(directoryPath.ToString());
+            return new OkObjectResult(path);
             //return new CreatedAtRouteResult("GetDirectory", new { id = result.Id }, path);
         }
 
