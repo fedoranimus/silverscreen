@@ -29,13 +29,14 @@ namespace Silverscreen.Library {
 
         public async Task<Silverscreen.Model.Directory> AddDirectory(string path) {
             var directory = new Silverscreen.Model.Directory(path);
-            Console.WriteLine("Adding {0} to {1}", path, directory.DirectoryPath);
+            Console.WriteLine("Adding {0} as {1}", path, directory.DirectoryPath);
             _libraryContext.Directories.Add(directory);
             await _libraryContext.SaveChangesAsync();
             return directory;
         }
 
         public void ScanLibrary() {
+            Console.WriteLine("Starting Library Scan...");
             foreach(var directory in _libraryContext.Directories) {
                 Console.WriteLine("Scanning {0}...", directory);
                 OmdbClient omdbClient = new OmdbClient();
@@ -61,11 +62,14 @@ namespace Silverscreen.Library {
             var movieData = FindVideo(directory);
 
             //get metadata from OMDB based on title and year 
-            var movie = await FetchMovieMetadata(omdbClient, movieData.Title, movieData.Year);
+            if(movieData != null) {
+                var movie = await FetchMovieMetadata(omdbClient, movieData.Title, movieData.Year);
 
-            //add new Movie to library
-            _libraryContext.Movies.Add(movie);
-            await _libraryContext.SaveChangesAsync();
+                //add new Movie to library
+                _libraryContext.Movies.Add(movie);
+                Console.WriteLine("Movie: {1}", movie.ImdbId);
+                await _libraryContext.SaveChangesAsync();
+            }
         }
 
         public MovieTitle FindVideo(string directory) {

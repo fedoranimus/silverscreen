@@ -1,6 +1,10 @@
 namespace Silverscreen.Model {
     public class Directory : IEntityBase
     {
+        private Directory() 
+        {
+            
+        }
         public Directory(string path) 
         {   
             DirectoryPath = path;

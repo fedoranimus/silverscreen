@@ -6,6 +6,17 @@ namespace Silverscreen.Model {
         {
 
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder) 
+        {
+            modelBuilder.Entity<Directory>()
+                .HasIndex(d => d.DirectoryPath)
+                .IsUnique();
+
+            modelBuilder.Entity<Movie>()
+                .HasIndex(m => m.ImdbId)
+                .IsUnique();
+        }
         public DbSet<Directory> Directories { get; set; }
         public DbSet<Movie> Movies { get; set;}
     }
