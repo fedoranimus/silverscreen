@@ -8,8 +8,8 @@ using System.Collections.Generic;
 using Silverscreen.OMDb;
 
 namespace Silverscreen.Renamer {
-    public class Renamer {
-        public Renamer() {
+    public class RenamerService {
+        public RenamerService() {
 
         }
 
@@ -19,6 +19,10 @@ namespace Silverscreen.Renamer {
 
         public void RenameMovie() {
 
+        }
+
+        private string RenameFromMetaData(FileInfo fileInfo, Metadata metadata) {
+            return "";
         }
 
         private string RenameFromStandardDownloadedMovie(FileInfo fileInfo) {
