@@ -237,6 +237,8 @@ _Pvt_Extensions
 node_modules
 .idea
 .DS_STORE
+*.js
+*.js.map
 
 # TestData
 TestData
