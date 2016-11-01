@@ -38,7 +38,7 @@ namespace Silverscreen.Library {
         public void ScanLibrary() {
             Console.WriteLine("Starting Library Scan...");
             foreach(var directory in _libraryContext.Directories) {
-                Console.WriteLine("Scanning {0}...", directory);
+                Console.WriteLine("Scanning {0}...", directory.DirectoryPath);
                 OmdbClient omdbClient = new OmdbClient();
                 DirectoryInfo DirInfo = new DirectoryInfo(directory.DirectoryPath);
 
@@ -49,7 +49,7 @@ namespace Silverscreen.Library {
                     AddMovie(omdbClient, d.FullName);
                 } 
                 Console.WriteLine("Number of subdirectories is {0}", directories.Count());
-                Console.WriteLine("{0} scan complete.", directory);
+                Console.WriteLine("{0} scan complete.", directory.DirectoryPath);
             }
         }
 
@@ -63,11 +63,12 @@ namespace Silverscreen.Library {
 
             //get metadata from OMDB based on title and year 
             if(movieData != null) {
+                Console.WriteLine("Fetching metadata for {0} ({1})", movieData.Title, movieData.Year);
                 var movie = await FetchMovieMetadata(omdbClient, movieData.Title, movieData.Year);
 
                 //add new Movie to library
                 _libraryContext.Movies.Add(movie);
-                Console.WriteLine("Movie: {1}", movie.ImdbId);
+                Console.WriteLine("Added: {0} as {1} ({2})", movie.ImdbId, movie.Title, movie.Year);
                 await _libraryContext.SaveChangesAsync();
             }
         }
@@ -83,6 +84,7 @@ namespace Silverscreen.Library {
                 .FirstOrDefault(); // get the largest (or null)
 
             if(videoFile != null) {
+                Console.WriteLine("Parsing {0}", videoFile.Name);
                 return ParseMovieName(videoFile.Name); //separate title from year
             } else {
                 Console.WriteLine("No files in {0}", directory);

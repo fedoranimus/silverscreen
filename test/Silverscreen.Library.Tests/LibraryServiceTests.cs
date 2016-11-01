@@ -41,18 +41,15 @@ namespace Silverscreen.Library.Tests {
         }
 
         [Fact]
-        public void Scan_Library() 
+        public async void Scan_Library() 
         {
             var options = CreateNewContextOptions();
 
             using(var context = new LibraryContext(options))
             {
                 var service = new LibraryService(context);
+                await service.AddDirectory(@"\\Plex\Movies");
                 service.ScanLibrary();
-            }
-
-            using(var context = new LibraryContext(options))
-            {
                 Assert.Equal(context.Movies.Count(), 295);
             }
         }

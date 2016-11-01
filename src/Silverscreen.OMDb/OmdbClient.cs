@@ -41,7 +41,7 @@ namespace Silverscreen.OMDb
         }
 
         public async Task<Metadata> GetMetadata(string title) {
-            string query = String.Format("t={0}?y={1}", title);
+            string query = String.Format("t={0}", title);
             return await FetchMovieMetadata(query);
         }
 
