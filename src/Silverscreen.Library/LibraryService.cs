@@ -74,9 +74,6 @@ namespace Silverscreen.Library {
         }
 
         public MovieTitle FindVideo(string directory) {
-            //var directoryIdx = directory.LastIndexOf('\\'); //get index where the directory ends
-            //var movieTitleString = directory.Substring(directoryIdx + 1); //get all text after this
-
             var ext = new List<string>{".mkv", ".avi"}; //put this in a configuration area
             var videoFile = new DirectoryInfo(directory).EnumerateFiles("*", SearchOption.AllDirectories) //enumerate all files
                 .Where(v => ext.Contains(Path.GetExtension(v.Extension))) //filter by their extensions
