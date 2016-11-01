@@ -68,7 +68,7 @@ namespace Silverscreen.Library {
 
                 //add new Movie to library
                 _libraryContext.Movies.Add(movie);
-                Console.WriteLine("Added: {0} as {1} ({2})", movie.ImdbId, movie.Title, movie.Year);
+                Console.WriteLine("Added: {0} as {1} ({2})", movie.ImdbId, movie.Title, movie.Year.ToString());
                 await _libraryContext.SaveChangesAsync();
             }
         }
