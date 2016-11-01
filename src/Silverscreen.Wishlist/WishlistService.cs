@@ -1,6 +1,6 @@
 namespace Silverscreen.Wishlist {
-    public class WishlistService {
-        WishlistService() {
+    public class WishlistService : IWishlistService {
+        public WishlistService() {
             
         }
     }

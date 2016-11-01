@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using Silverscreen.OMDb;
 
 namespace Silverscreen.Renamer {
-    public class RenamerService {
+    public class RenamerService : IRenamerService {
         public RenamerService() {
 
         }

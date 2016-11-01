@@ -4,6 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Silverscreen.Library;
 using Silverscreen.Model;
+using Silverscreen.Wishlist;
+using Silverscreen.Renamer;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -21,6 +23,8 @@ namespace Silverscreen.Core
             services.AddDbContext<LibraryContext>(options => options.UseSqlServer(connection));
 
             services.AddSingleton<ILibraryService, LibraryService>();
+            services.AddSingleton<IWishlistService, WishlistService>();
+            services.AddSingleton<IRenamerService, RenamerService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
