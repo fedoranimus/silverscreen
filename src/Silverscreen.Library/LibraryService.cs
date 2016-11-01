@@ -129,7 +129,7 @@ namespace Silverscreen.Library {
 
             return new Movie() {
                 Title = title,
-                Year = Convert.ToInt32(year),
+                Year = year != "" ? Convert.ToInt32(year) : Convert.ToInt32(metadata.Year),
                 Plot = metadata.Plot,
                 ImdbId = metadata.imdbID,
                 Poster = metadata.Poster,
