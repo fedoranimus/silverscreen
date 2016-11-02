@@ -31,7 +31,10 @@ namespace Silverscreen.OMDb
                 {
                     var data = await response.Content.ReadAsStringAsync();
                     newMovie = await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<Metadata>(data));
-                    return newMovie;
+                    if(Convert.ToBoolean(newMovie.Response))
+                        return newMovie;
+                    else
+                        return null;
                 }
                 else
                 {
