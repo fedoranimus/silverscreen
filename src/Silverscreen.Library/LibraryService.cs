@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Silverscreen.OMDb;
+using Silverscreen.Parser;
 
 namespace Silverscreen.Library {
     public class LibraryService : ILibraryService {
@@ -58,22 +59,19 @@ namespace Silverscreen.Library {
         }
 
         private async void AddMovie(OmdbClient omdbClient, string directory) {
-                    var movie = await CorrelateVideoToMetadata(omdbClient, directory);
+            var movie = await CorrelateVideoToMetadata(omdbClient, directory);
 
-                    if(movie != null) {
-                        //add new Movie to library
-                        _libraryContext.Movies.Add(movie);
-                        Console.WriteLine("Added: {0} as {1} ({2})", movie.ImdbId, movie.Title, movie.Year.ToString());
-                        await _libraryContext.SaveChangesAsync();
-                    }
-
-
-                
+            if(movie != null) {
+                //add new Movie to library
+                _libraryContext.Movies.Add(movie);
+                Console.WriteLine("Added: {0} as {1} ({2})", movie.ImdbId, movie.Title, movie.Year.ToString());
+                await _libraryContext.SaveChangesAsync();
+            }
         }
 
         private async Task<Movie> CorrelateVideoToMetadata(OmdbClient omdbClient, string directory) {
             //parse title and year from directory.FullName
-            var movieData = FindVideo(directory);
+            var movieData = FindMovie(directory);
 
             //get metadata from OMDB based on title and year 
             if(movieData != null) 
@@ -92,56 +90,7 @@ namespace Silverscreen.Library {
                     //if metadata by directory cannot be found
                     //add to list of unknown items 
                 }
-                
             }
-
-        }
-
-        public MovieTitle FindVideo(string directory) {
-            var ext = new List<string>{".mkv", ".avi"}; //put this in a configuration area
-            var videoFile = new DirectoryInfo(directory).EnumerateFiles("*", SearchOption.AllDirectories) //enumerate all files
-                .Where(v => ext.Contains(Path.GetExtension(v.Extension))) //filter by their extensions
-                .OrderByDescending(f => f.Length) // order by their size
-                .FirstOrDefault(); // get the largest (or null)
-
-            if(videoFile != null) {
-                Console.WriteLine("Parsing {0}", videoFile.Name);
-                return ParseMovieName(videoFile.Name); //separate title from year
-            } else {
-                Console.WriteLine("No files in {0}", directory);
-                return null;
-            }
-        }
-
-        public MovieTitle ParseMovieName(string fullFileName) {
-            var fileName = Path.GetFileNameWithoutExtension(fullFileName);
-            var fileExt = Path.GetExtension(fullFileName);
-
-            string titlePattern = @"^(?<Title>.+?)(\((?<Year>\d+?)\))?$";
-
-            Match match = Regex.Match(fileName, titlePattern);
-
-            var movieTitleDirty = match.Groups["Title"].Value.Trim().Split(',');
-            var movieTitle = "";
-
-            if(movieTitleDirty.Length > 1) {
-                var moviePrefix = movieTitleDirty.Last().Trim(); // ", The" more than likely
-                if(moviePrefix.ToLowerInvariant().Contains("the")) {
-                    movieTitle = movieTitleDirty[0]; //would rather do this via regex
-                } else {
-                    movieTitle = match.Groups["Title"].Value.Trim(); 
-                }
-            } else {
-                movieTitle = match.Groups["Title"].Value.Trim(); 
-            }
-            
-            var movieYear = match.Groups["Year"].Value;            
-
-            return new MovieTitle() {
-                Title = movieTitle,
-                Year = movieYear,
-                Extension = fileExt
-            };
         }
 
         private async Task<Movie> FetchMovieMetadata(OmdbClient omdbClient, string title, string year) {

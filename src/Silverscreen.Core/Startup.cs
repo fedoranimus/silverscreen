@@ -6,6 +6,7 @@ using Silverscreen.Library;
 using Silverscreen.Model;
 using Silverscreen.Wishlist;
 using Silverscreen.Renamer;
+using Silverscreen.Parser;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -25,6 +26,7 @@ namespace Silverscreen.Core
             services.AddSingleton<ILibraryService, LibraryService>();
             services.AddSingleton<IWishlistService, WishlistService>();
             services.AddSingleton<IRenamerService, RenamerService>();
+            services.AddSingleton<IParserService, ParserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
