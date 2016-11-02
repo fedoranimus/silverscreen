@@ -11,8 +11,10 @@ using Silverscreen.Parser;
 namespace Silverscreen.Library {
     public class LibraryService : ILibraryService {
         private readonly LibraryContext _libraryContext;
-        public LibraryService(LibraryContext libraryContext) {
+        private readonly ParserService _parserService;
+        public LibraryService(LibraryContext libraryContext, ParserService parserService) {
             _libraryContext = libraryContext;
+            _parserService = parserService;
         }
 
         public LibraryContext GetLibrary(){
@@ -67,11 +69,15 @@ namespace Silverscreen.Library {
                 Console.WriteLine("Added: {0} as {1} ({2})", movie.ImdbId, movie.Title, movie.Year.ToString());
                 await _libraryContext.SaveChangesAsync();
             }
+            else
+            {
+                Console.WriteLine("{0} doesn't contain a valid movie", directory);
+            }
         }
 
         private async Task<Movie> CorrelateVideoToMetadata(OmdbClient omdbClient, string directory) {
             //parse title and year from directory.FullName
-            var movieData = FindMovie(directory);
+            var movieData = _parserService.ParseMovie(directory);
 
             //get metadata from OMDB based on title and year 
             if(movieData != null) 
@@ -84,12 +90,13 @@ namespace Silverscreen.Library {
                 }
                 else 
                 {
-                    Console.WriteLine("No Metadata for {0} found, checking directory...", movieData.Title);
-
-                    //check directory name for metadata
-                    //if metadata by directory cannot be found
-                    //add to list of unknown items 
+                    Console.WriteLine("No Metadata for {0} found, adding to unknown list...", movieData.Title);
+                    return null;
                 }
+            }
+            else 
+            {
+                return null;
             }
         }
 
