@@ -58,19 +58,43 @@ namespace Silverscreen.Library {
         }
 
         private async void AddMovie(OmdbClient omdbClient, string directory) {
+                    var movie = await CorrelateVideoToMetadata(omdbClient, directory);
+
+                    if(movie != null) {
+                        //add new Movie to library
+                        _libraryContext.Movies.Add(movie);
+                        Console.WriteLine("Added: {0} as {1} ({2})", movie.ImdbId, movie.Title, movie.Year.ToString());
+                        await _libraryContext.SaveChangesAsync();
+                    }
+
+
+                
+        }
+
+        private async Task<Movie> CorrelateVideoToMetadata(OmdbClient omdbClient, string directory) {
             //parse title and year from directory.FullName
             var movieData = FindVideo(directory);
 
             //get metadata from OMDB based on title and year 
-            if(movieData != null) {
+            if(movieData != null) 
+            {
                 Console.WriteLine("Fetching metadata for {0} ({1})", movieData.Title, movieData.Year);
                 var movie = await FetchMovieMetadata(omdbClient, movieData.Title, movieData.Year);
+                if(movie != null) 
+                {
+                    return movie;
+                }
+                else 
+                {
+                    Console.WriteLine("No Metadata for {0} found, checking directory...", movieData.Title);
 
-                //add new Movie to library
-                _libraryContext.Movies.Add(movie);
-                Console.WriteLine("Added: {0} as {1} ({2})", movie.ImdbId, movie.Title, movie.Year.ToString());
-                await _libraryContext.SaveChangesAsync();
+                    //check directory name for metadata
+                    //if metadata by directory cannot be found
+                    //add to list of unknown items 
+                }
+                
             }
+
         }
 
         public MovieTitle FindVideo(string directory) {
@@ -129,7 +153,7 @@ namespace Silverscreen.Library {
 
             return new Movie() {
                 Title = title,
-                Year = year != "" ? Convert.ToInt32(year) : Convert.ToInt32(metadata.Year),
+                Year = Convert.ToInt32(metadata.Year),
                 Plot = metadata.Plot,
                 ImdbId = metadata.imdbID,
                 Poster = metadata.Poster,
