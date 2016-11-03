@@ -25,7 +25,7 @@ namespace Silverscreen.Library {
             return _libraryContext.Movies.ToList();
         }
 
-        public Movie GetItem(int id)
+        public Movie GetMovie(int id)
         {
             return _libraryContext.Movies.Where(m => m.Id == id).FirstOrDefault();
         }
@@ -64,10 +64,19 @@ namespace Silverscreen.Library {
             var movie = await CorrelateVideoToMetadata(omdbClient, directory);
 
             if(movie != null) {
-                //add new Movie to library
-                _libraryContext.Movies.Add(movie);
-                Console.WriteLine("Added: {0} as {1} ({2})", movie.ImdbId, movie.Title, movie.Year.ToString());
-                await _libraryContext.SaveChangesAsync();
+                var movieEntry = _libraryContext.Movies.FirstOrDefault(m => m.ImdbId == movie.ImdbId);
+                if(movieEntry != null) {
+                    if(movieEntry.Equals(movie))
+                        return;
+                    movieEntry = movie;
+                    _libraryContext.Movies.Update(movieEntry);
+                    await _libraryContext.SaveChangesAsync();
+                } else {
+                    //add new Movie to library
+                    _libraryContext.Movies.Add(movie);
+                    Console.WriteLine("Added: {0} as {1} ({2})", movie.ImdbId, movie.Title, movie.Year.ToString());
+                    await _libraryContext.SaveChangesAsync();
+                }
             }
             else
             {
