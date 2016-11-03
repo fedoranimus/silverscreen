@@ -23,5 +23,17 @@ namespace Silverscreen.Parser.Tests
             Assert.Equal(parsedMovie.Quality, "720p");
             Assert.Equal(parsedMovie.Extension, ".mkv");
         }
+
+        [Fact]
+        public void ParseMovieWithoutQuality()
+        {
+            var _parserService = new ParserService();
+            string directory = @"C:\Users\Tim\Documents\GitHub\silverscreen\test\TestData\Videos\Crouching Tiger, Hidden Dragon Sword of Destiny (2016)";
+            ParsedMovie parsedMovie = _parserService.ParseMovie(directory);
+
+            Assert.Equal(parsedMovie.Title, "Crouching Tiger, Hidden Dragon Sword of Destiny");
+            Assert.Equal(parsedMovie.Year, "2016");
+            Assert.Equal(parsedMovie.Extension, ".mkv");
+        }
     }
 }

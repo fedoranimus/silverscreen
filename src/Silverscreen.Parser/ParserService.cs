@@ -54,7 +54,7 @@ namespace Silverscreen.Parser {
         }
 
         private ParsedMovie parseSimpleTitle(string unparsedTitle) {
-            string titlePattern = @"^(?<Title>.+?)\ \((?<Year>[12]\d\d\d)\)\ (?<Quality>\d{1,4}[ipk])$"; //{Title} {(Year)} {Quality}
+            string titlePattern = @"^(?<Title>.+?)\((?<Year>[12]\d\d\d)\)(?<Quality>\ \d{1,4}[ipk])?$"; //{Title} {(Year)} {Quality}
 
             Match match = Regex.Match(unparsedTitle, titlePattern);
 
@@ -73,7 +73,7 @@ namespace Silverscreen.Parser {
             }
             
             var movieYear = match.Groups["Year"].Value; 
-            var movieQuality = match.Groups["Quality"].Value;
+            var movieQuality = match.Groups["Quality"].Value.Trim();
 
             return new ParsedMovie() {
                             Title = movieTitle,
