@@ -20,11 +20,17 @@ namespace Silverscreen.Parser {
             if(videoFile != null) {
                 Console.WriteLine("Parsing {0}", videoFile.Name);
                 var parsedMovie = ParseMovieFile(videoFile.Name); //separate title from year
+                if(parsedMovie.Title != "") 
+                {
+                    parsedMovie.FileSize = videoFile.Length;
+                    parsedMovie.Extension = videoFile.Extension;
 
-                parsedMovie.FileSize = videoFile.Length;
-                parsedMovie.Extension = videoFile.Extension;
-
-                return parsedMovie;
+                    return parsedMovie;
+                }
+                else 
+                {
+                    return null;
+                }
             } else {
                 Console.WriteLine("No video file found in {0}", directory);
                 return null;

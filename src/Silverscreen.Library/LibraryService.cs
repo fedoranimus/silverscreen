@@ -38,7 +38,7 @@ namespace Silverscreen.Library {
             return directory;
         }
 
-        public void ScanLibrary() {
+        public async Task ScanLibrary() {
             Console.WriteLine("Starting Library Scan...");
             foreach(var directory in _libraryContext.Directories) {
                 Console.WriteLine("Scanning {0}...", directory.DirectoryPath);
@@ -49,7 +49,7 @@ namespace Silverscreen.Library {
                 
                 foreach(var d in directories) {
                     Console.WriteLine("Parsing movie: {0}...", d.FullName);
-                    AddMovie(omdbClient, d.FullName);
+                    await AddMovie(omdbClient, d.FullName);
                 } 
                 Console.WriteLine("Number of subdirectories is {0}", directories.Count());
                 Console.WriteLine("{0} scan complete.", directory.DirectoryPath);
@@ -60,7 +60,7 @@ namespace Silverscreen.Library {
             return _libraryContext.Directories.Select(d => d.DirectoryPath).ToList();
         }
 
-        private async void AddMovie(OmdbClient omdbClient, string directory) {
+        private async Task AddMovie(OmdbClient omdbClient, string directory) {
             var movie = await CorrelateVideoToMetadata(omdbClient, directory);
 
             if(movie != null) {
