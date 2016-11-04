@@ -48,8 +48,10 @@ namespace Silverscreen.Library {
                 var directories = DirInfo.EnumerateDirectories();
                 
                 foreach(var d in directories) {
-                    Console.WriteLine("Parsing movie: {0}...", d.FullName);
+                    Console.WriteLine("--------------");
+                    Console.WriteLine("Found movie directory: {0}...", d.FullName);
                     await AddMovie(omdbClient, d.FullName);
+                    Console.WriteLine("--------------");
                 } 
                 Console.WriteLine("Number of subdirectories is {0}", directories.Count());
                 Console.WriteLine("{0} scan complete.", directory.DirectoryPath);
@@ -111,7 +113,7 @@ namespace Silverscreen.Library {
 
         private async Task<Movie> FetchMovieMetadata(OmdbClient omdbClient, string title, string year) {
             Metadata metadata = null;
-            
+
             if(year == "")
                 metadata = await omdbClient.GetMetadata(title);
             else 
