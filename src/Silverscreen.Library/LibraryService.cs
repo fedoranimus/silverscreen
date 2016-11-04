@@ -111,19 +111,27 @@ namespace Silverscreen.Library {
 
         private async Task<Movie> FetchMovieMetadata(OmdbClient omdbClient, string title, string year) {
             Metadata metadata = null;
+            
             if(year == "")
                 metadata = await omdbClient.GetMetadata(title);
             else 
                 metadata = await omdbClient.GetMetadata(title, year);
 
-            return new Movie() {
-                Title = title,
-                Year = Convert.ToInt32(metadata.Year),
-                Plot = metadata.Plot,
-                ImdbId = metadata.imdbID,
-                Poster = metadata.Poster,
-                Rating = metadata.imdbRating
-            };
+            if(metadata != null) 
+            {
+                return new Movie() {
+                    Title = title,
+                    Year = Convert.ToInt32(metadata.Year),
+                    Plot = metadata.Plot,
+                    ImdbId = metadata.imdbID,
+                    Poster = metadata.Poster,
+                    Rating = metadata.imdbRating
+                };
+            } 
+            else
+            {
+                return null;
+            } 
         }
     }
 }
