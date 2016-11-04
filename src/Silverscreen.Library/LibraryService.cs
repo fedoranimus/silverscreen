@@ -48,7 +48,6 @@ namespace Silverscreen.Library {
                 var directories = DirInfo.EnumerateDirectories();
                 
                 foreach(var d in directories) {
-                    Console.WriteLine("--------------");
                     Console.WriteLine("Found movie directory: {0}...", d.FullName);
                     await AddMovie(omdbClient, d.FullName);
                     Console.WriteLine("--------------");
