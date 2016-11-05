@@ -56,7 +56,8 @@ namespace Silverscreen.Library.Tests {
                 var service = new LibraryService(context, parser);
                 await service.AddDirectory(@"\\Plex\Movies");
                 await service.ScanLibrary();
-                Assert.Equal(context.Movies.Count(), 0); //Don't expect anything to work yet
+                Console.WriteLine("Found {0} movies.", context.Movies.Count());
+                Assert.Equal(context.Movies.Count(), 10); //Don't expect anything to work yet
             }
         }
 
