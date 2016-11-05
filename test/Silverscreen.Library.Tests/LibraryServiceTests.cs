@@ -12,7 +12,6 @@ using System.Net;
 namespace Silverscreen.Library.Tests {
 
     public class LibraryServiceTests {
-
         public LibraryServiceTests() {
             NetworkCredential credentials = new NetworkCredential("admin", "");
             CredentialCache netCache = new CredentialCache();
