@@ -8,7 +8,7 @@ namespace Silverscreen.OMDb
 {
     public class OmdbClient
     {
-        const string omdbUrl = "https://www.omdbapi.com/"; // Base omdb api URL
+        const string omdbUrl = "https://www.omdbapi.com/"; // Base omdb api URL, https seems to be slow
         public string omdbKey; // A key is required for poster images.
         public Metadata newMovie; // Initialize movie object
         public MetadataList newMovieList; // Initialize movie list object
