@@ -59,5 +59,20 @@ namespace Silverscreen.Library.Tests {
                 Assert.Equal(context.Movies.Count(), 0); //Don't expect anything to work yet
             }
         }
+
+        [Fact]
+        public async void Scan_Subset()
+        {
+            var options = CreateNewContextOptions();
+
+            using (var context = new LibraryContext(options))
+            {
+                var parser = new ParserService();
+                var service = new LibraryService(context, parser);
+                await service.AddDirectory(@"C:\Users\Tim\Documents\GitHub\silverscreen\test\TestData\Videos");
+                await service.ScanLibrary();
+                Assert.Equal(context.Movies.Count(), 3);
+            }
+        }
     }
 }

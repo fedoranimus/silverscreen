@@ -8,7 +8,7 @@ namespace Silverscreen.OMDb
 {
     public class OmdbClient
     {
-        const string omdbUrl = "http://www.omdbapi.com/?"; // Base omdb api URL
+        const string omdbUrl = "http://www.omdbapi.com/"; // Base omdb api URL
         public string omdbKey; // A key is required for poster images.
         public Metadata newMovie; // Initialize movie object
         public MetadataList newMovieList; // Initialize movie list object
@@ -26,7 +26,7 @@ namespace Silverscreen.OMDb
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                HttpResponseMessage response = await client.GetAsync(omdbUrl + query);
+                HttpResponseMessage response = await client.GetAsync(query);
                 if (response.IsSuccessStatusCode)
                 {
                     var data = await response.Content.ReadAsStringAsync();
@@ -44,12 +44,12 @@ namespace Silverscreen.OMDb
         }
 
         public async Task<Metadata> GetMetadata(string title) {
-            string query = String.Format("t={0}", title);
+            string query = String.Format("?t={0}", title);
             return await FetchMovieMetadata(query);
         }
 
         public async Task<Metadata> GetMetadata(string title, string year) {
-            string query = String.Format("t={0}?y={1}", title, year);
+            string query = String.Format("?t={0}&y={1}", title, year);
             return await FetchMovieMetadata(query);
         }
 
@@ -61,7 +61,7 @@ namespace Silverscreen.OMDb
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                HttpResponseMessage response = await client.GetAsync(omdbUrl + "s=" + query);
+                HttpResponseMessage response = await client.GetAsync("?s=" + query);
                 if (response.IsSuccessStatusCode)
                 {
                     var data = await response.Content.ReadAsStringAsync();
