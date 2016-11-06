@@ -3,6 +3,8 @@
 
 
 ## Running DB Migration
-cd Silverscreen.Model
-`dotnet ef --startup-project ../Silverscreen.Core migrations add Initial`
-`dotnet ef --startup-project ../Silverscreen.Core database update`
+cd Silverscreen.Core
+
+`dotnet ef --startup-project ../Silverscreen.API migrations add Initial`
+
+`dotnet ef --startup-project ../Silverscreen.API database update`

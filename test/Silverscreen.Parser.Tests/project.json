@@ -4,11 +4,7 @@
     "dependencies": {
         "xunit": "2.2.0-beta3-build3402",
         "dotnet-test-xunit": "2.2.0-preview2-build1029",
-        "Silverscreen.Model": {
-            "version": "1.0.0-*",
-            "target": "project"
-        },
-        "Silverscreen.Parser": {
+        "Silverscreen.Core": {
             "version": "1.0.0-*",
             "target": "project"
         }

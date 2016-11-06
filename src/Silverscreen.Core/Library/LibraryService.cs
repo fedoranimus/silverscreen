@@ -1,19 +1,17 @@
 using System.IO;
 using System;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using Silverscreen.Core.Parser;
-using Silverscreen.Core.Library;
 using Silverscreen.Core.Model;
 using Silverscreen.Core.OMDb;
+using Silverscreen.Core.Parser;
 
 namespace Silverscreen.Core.Library {
     public class LibraryService : ILibraryService {
         private readonly LibraryContext _libraryContext;
-        private readonly ParserService _parserService;
-        public LibraryService(LibraryContext libraryContext, ParserService parserService) {
+        private readonly IParserService _parserService;
+        public LibraryService(LibraryContext libraryContext, IParserService parserService) {
             _libraryContext = libraryContext;
             _parserService = parserService;
         }

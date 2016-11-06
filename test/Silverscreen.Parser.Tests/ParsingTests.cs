@@ -2,8 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
-using Silverscreen.Model;
-using Silverscreen.Parser;
+using Silverscreen.Core.Model;
+using Silverscreen.Core.Parser;
 using Xunit;
 using System;
 

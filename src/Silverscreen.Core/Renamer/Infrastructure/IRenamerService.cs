@@ -1,3 +1,5 @@
-public interface IRenamerService {
+namespace Silverscreen.Core.Renamer {
+    public interface IRenamerService {
 
+    }
 }

@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 namespace Silverscreen.Core.Parser {
     public class ParserService : IParserService {
         public ParserService() {
-
+            Console.WriteLine("Instantiated ParserService");
         }
 
         public ParsedMovie ParseMovie(string directory) {

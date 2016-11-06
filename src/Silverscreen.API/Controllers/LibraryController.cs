@@ -1,8 +1,9 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
 using Silverscreen.Core.Model;
+using Silverscreen.Core.Library;
 
-namespace Silverscreen.Core.Controllers {
+namespace Silverscreen.API.Controllers {
     [Route("api/[controller]")]
     public class LibraryController : Controller
     {
@@ -17,8 +18,8 @@ namespace Silverscreen.Core.Controllers {
         public IActionResult Get() 
         {
             Console.WriteLine("Get Movies");
-            return new OkObjectResult("");
-            //return new OkObjectResult(_service.GetMovies());
+
+            return new OkObjectResult(_service.GetMovies());
         }
 
         [HttpGet("movies/scan")]

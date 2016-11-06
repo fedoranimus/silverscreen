@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Silverscreen.Core.Controllers {
+namespace Silverscreen.API.Controllers {
     [Route("api/[controller]")]
     public class WishlistController : Controller
     {

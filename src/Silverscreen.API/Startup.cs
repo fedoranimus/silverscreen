@@ -14,6 +14,7 @@ using Silverscreen.Core.Renamer;
 using Silverscreen.Core.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Cors.Infrastructure;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Silverscreen.API
 {
@@ -50,10 +51,11 @@ namespace Silverscreen.API
             var connection = @"Server=(localdb)\mssqllocaldb;Database=Silverscreen;Trusted_Connection=True;";
             services.AddDbContext<LibraryContext>(options => options.UseSqlServer(connection));
 
-            services.AddSingleton<ILibraryService, LibraryService>();
-            services.AddSingleton<IWishlistService, WishlistService>();
-            services.AddSingleton<IRenamerService, RenamerService>();
-            services.AddSingleton<IParserService, ParserService>();
+            services.TryAddSingleton<IParserService, ParserService>();
+            services.TryAddSingleton<ILibraryService, LibraryService>();
+            services.TryAddSingleton<IWishlistService, WishlistService>();
+            services.TryAddSingleton<IRenamerService, RenamerService>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
