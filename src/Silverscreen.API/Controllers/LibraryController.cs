@@ -1,6 +1,6 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
-using Silverscreen.Model;
+using Silverscreen.Core.Model;
 
 namespace Silverscreen.Core.Controllers {
     [Route("api/[controller]")]

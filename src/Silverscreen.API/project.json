@@ -4,12 +4,7 @@
       "version": "1.1.0-preview1-*",
       "type": "platform"
     },
-    "Silverscreen.Library": "1.0.0-*",
-    "Silverscreen.Model": "1.0.0-*",
-    "Silverscreen.OMDb": "1.0.0-*",
-    "Silverscreen.Wishlist": "1.0.0-*",
-    "Silverscreen.Renamer": "1.0.0-*",
-    "Silverscreen.Parser": "1.0.0-*",
+    "Silverscreen.Core": "1.0.0-*",
     "Microsoft.AspNetCore.Mvc": "1.0.1",
     "Microsoft.AspNetCore.Routing": "1.0.1",
     "Microsoft.AspNetCore.Server.IISIntegration": "1.0.0",

@@ -7,9 +7,19 @@
         {
             "taskName": "build",
             "args": [
-                "${workspaceRoot}/src/Silverscreen.Core/project.json"
+                "${workspaceRoot}/src/Silverscreen.Host/project.json",
+                "${workspaceRoot}/src/Silverscreen.API/project.json"
             ],
             "isBuildCommand": true,
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "taskName": "run",
+            "args": [
+                "${workspaceRoot}/src/Silverscreen.Api/project.json",
+                "${workspaceRoot}/src/Silverscreen.Host/project.json"
+            ],
+            "isWatching": true,
             "problemMatcher": "$msCompile"
         }
     ]

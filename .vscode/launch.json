@@ -6,7 +6,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceRoot}/src/Silverscreen.Core/bin/Debug/netcoreapp1.0/Silverscreen.Core.dll",
+            "program": "${workspaceRoot}/src/Silverscreen.Host/bin/Debug/netcoreapp1.1/Silverscreen.Host.dll",
             "args": [],
             "cwd": "${workspaceRoot}",
             "stopAtEntry": false,
@@ -27,9 +27,6 @@
             },
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development"
-            },
-            "sourceFileMap": {
-                "/Views": "${workspaceRoot}/src/Silverscreen.Core/Views"
             }
         },
         {

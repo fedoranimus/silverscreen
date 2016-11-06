@@ -7,12 +7,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Silverscreen.Library;
-using Silverscreen.Model;
-using Silverscreen.Wishlist;
-using Silverscreen.Renamer;
-using Silverscreen.Parser;
+using Silverscreen.Core.Library;
+using Silverscreen.Core.Wishlist;
+using Silverscreen.Core.Parser;
+using Silverscreen.Core.Renamer;
+using Silverscreen.Core.Model;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace Silverscreen.API
 {
