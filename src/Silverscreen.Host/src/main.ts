@@ -14,8 +14,8 @@ export function configure(aurelia: Aurelia) {
     .standardConfiguration()
     .feature('resources')
     .plugin('aurelia-api', config => {
-      config.registerEndpoint('api', '/api');
-      config.registerEndpoint('library', '/api/library');
+      config.registerEndpoint('api', 'http://localhost:5005/api');
+      config.registerEndpoint('library', 'http://localhost:5005/api/library');
   });
 
   if (environment.debug) {

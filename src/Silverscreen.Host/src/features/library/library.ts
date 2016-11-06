@@ -1,6 +1,8 @@
+import {autoinject} from 'aurelia-framework';
 import {IMovie} from '../../infrastructure/IMovie';
 import {LibraryService} from '../../services/libraryService';
 
+@autoinject
 export class Library {
     movies: IMovie[] = [];
 

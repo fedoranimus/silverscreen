@@ -13,19 +13,21 @@ namespace Silverscreen.Core.Controllers {
             _service = service;
         }
 
-        [HttpGet("/movies")]
+        [HttpGet("movies")]
         public IActionResult Get() 
         {
-            return new OkObjectResult(_service.GetMovies());
+            Console.WriteLine("Get Movies");
+            return new OkObjectResult("");
+            //return new OkObjectResult(_service.GetMovies());
         }
 
-        [HttpGet("/movies/scan")]
+        [HttpGet("movies/scan")]
         public void Scan()
         {
             _service.ScanLibrary();
         }
 
-        [HttpGet("/movies/{id}")]
+        [HttpGet("movies/{id}")]
         public IActionResult GetMovie(int id)
         {
             Movie _movie = _service.GetMovie(id);
@@ -40,7 +42,7 @@ namespace Silverscreen.Core.Controllers {
             }
         }
 
-        [HttpPostAttribute("/movies/directories")]
+        [HttpPostAttribute("movies/directories")]
         public IActionResult AddDirectory([FromBody] DirectoryContract directory) {
             Console.WriteLine("Hit AddDirectory");
             string path = directory.directoryPath;
@@ -54,7 +56,7 @@ namespace Silverscreen.Core.Controllers {
             //return new CreatedAtRouteResult("GetDirectory", new { id = result.Id }, path);
         }
 
-        [HttpGetAttribute("/movies/directories")]
+        [HttpGetAttribute("movies/directories")]
         public IActionResult GetDirectories() {
             return new OkObjectResult(_service.GetDirectories());
         }

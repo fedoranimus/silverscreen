@@ -13,7 +13,7 @@ using Silverscreen.Core.Parser;
 using Silverscreen.Core.Renamer;
 using Silverscreen.Core.Model;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.AspNetCore.Cors.Infrastructure;
 
 namespace Silverscreen.API
 {
@@ -34,6 +34,16 @@ namespace Silverscreen.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Configure CORS
+            var corsBuilder = new CorsPolicyBuilder();
+            corsBuilder.AllowAnyHeader();
+            corsBuilder.AllowAnyMethod();
+            corsBuilder.WithOrigins("http://localhost:5000");
+            corsBuilder.AllowCredentials();
+            services.AddCors(options => {
+                options.AddPolicy("Silverscreen", corsBuilder.Build());
+            });
+
             // Add framework services.
             services.AddMvc();
 
@@ -49,6 +59,8 @@ namespace Silverscreen.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            app.UseCors("Silverscreen");
+            
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
