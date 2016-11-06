@@ -13,8 +13,8 @@ export class App {
     config.title = "Silverscreen";
 
     config.map([
-      { route: '', name: 'root', moduleId: 'features/library/library', nav: true, title: 'Library' },
-      { route: 'wishlist', name: 'wishlist', moduleId: 'features/wishlist/wishlist', nav: true, title: 'Wishlist' },
+      { route: ['wishlist', ''], name: 'wishlist', moduleId: 'features/wishlist/wishlist', nav: true, title: 'Wishlist' },
+      { route: 'library', name: 'library', moduleId: 'features/library/library', nav: true, title: 'Library' },
       { route: 'settings', name: 'settings', moduleId: 'features/settings/settings', nav: true, title: 'Settings' },
       { route: 'system', name: 'system', moduleId: 'features/system/system', nav: true, title: 'System' }
     ]);
