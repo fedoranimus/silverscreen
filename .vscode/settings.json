@@ -1,4 +1,4 @@
 // Place your settings in this file to overwrite default and user settings.
 {
-  "typescript.tsdk": "../silverscreen/src/Silverscreen.Core/ui/node_modules/typescript/lib"
+  "typescript.tsdk": "../silverscreen/src/Silverscreen.Host/node_modules/typescript/lib"
 }
