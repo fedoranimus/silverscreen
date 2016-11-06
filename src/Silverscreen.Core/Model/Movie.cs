@@ -28,5 +28,8 @@ namespace Silverscreen.Core.Model {
 
         public QualityType Quality { get; set; }
 
+        public bool inLibrary { get; set; }
+        public QualityType DesiredQuality { get; set; }
+
     }
 }

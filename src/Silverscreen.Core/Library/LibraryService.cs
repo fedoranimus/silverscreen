@@ -23,7 +23,7 @@ namespace Silverscreen.Core.Library {
         }
 
         public List<Movie> GetMovies() {
-            return _libraryContext.Movies.ToList();
+            return _libraryContext.Movies.Where(m => m.inLibrary == true).ToList(); //only get the movies in the library
         }
 
         public Movie GetMovie(int id)
@@ -66,6 +66,7 @@ namespace Silverscreen.Core.Library {
             var movie = await CorrelateVideoToMetadata(omdbClient, directory);
 
             if(movie != null) {
+                movie.inLibrary = true;
                 var movieEntry = _libraryContext.Movies.FirstOrDefault(m => m.ImdbId == movie.ImdbId);
                 if(movieEntry != null) {
                     if(movieEntry.Equals(movie))
