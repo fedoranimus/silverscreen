@@ -39,18 +39,20 @@ namespace Silverscreen.Core.Library {
 
         public async Task ScanLibrary() {
             Console.WriteLine("Starting Library Scan...");
-            foreach(var directory in _libraryContext.Directories) {
+            var directories = _libraryContext.Directories.ToList();
+            foreach(var directory in directories) {
                 Console.WriteLine("Scanning {0}...", directory.DirectoryPath);
                 OmdbClient omdbClient = new OmdbClient();
                 DirectoryInfo DirInfo = new DirectoryInfo(directory.DirectoryPath);
 
-                var directories = DirInfo.EnumerateDirectories();
+                var movieDirectories = DirInfo.EnumerateDirectories();
                 
-                foreach(var d in directories) {
+                foreach(var d in movieDirectories) {
                     Console.WriteLine("Found movie directory: {0}...", d.FullName);
                     await AddMovie(omdbClient, d.FullName);
                     Console.WriteLine("--------------");
                 } 
+                await _libraryContext.SaveChangesAsync();
                 Console.WriteLine("Number of subdirectories is {0}", directories.Count());
                 Console.WriteLine("{0} scan complete.", directory.DirectoryPath);
             }
@@ -62,22 +64,10 @@ namespace Silverscreen.Core.Library {
 
         private async Task AddMovie(OmdbClient omdbClient, string directory) {
             var movie = await CorrelateVideoToMetadata(omdbClient, directory);
-
             if(movie != null) {
                 movie.inLibrary = true;
-                var movieEntry = _libraryContext.Movies.FirstOrDefault(m => m.ImdbId == movie.ImdbId);
-                if(movieEntry != null) {
-                    if(movieEntry.Equals(movie))
-                        return;
-                    movieEntry = movie;
-                    _libraryContext.Movies.Update(movieEntry);
-                    await _libraryContext.SaveChangesAsync();
-                } else {
-                    //add new Movie to library
-                    _libraryContext.Movies.Add(movie);
-                    Console.WriteLine("Added: {0} as {1} ({2})", movie.ImdbId, movie.Title, movie.Year.ToString());
-                    await _libraryContext.SaveChangesAsync();
-                }
+                _libraryContext.Movies.Add(movie); //add new Movie to library/update if it exists
+                Console.WriteLine("Added: {0} as {1} ({2})", movie.ImdbId, movie.Title, movie.Year.ToString());
             }
             else
             {
