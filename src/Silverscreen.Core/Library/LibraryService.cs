@@ -11,9 +11,11 @@ namespace Silverscreen.Core.Library {
     public class LibraryService : ILibraryService {
         private readonly MediaCollectionContext _mediaCollectionContext;
         private readonly IParserService _parserService;
-        public LibraryService(MediaCollectionContext mediaCollectionContext, IParserService parserService) {
+        private readonly IOmdbClient _omdbClient;
+        public LibraryService(MediaCollectionContext mediaCollectionContext, IParserService parserService, IOmdbClient omdbClient) {
             _mediaCollectionContext = mediaCollectionContext;
             _parserService = parserService;
+            _omdbClient = omdbClient;
         }
 
         public MediaCollectionContext GetLibrary(){
@@ -42,14 +44,13 @@ namespace Silverscreen.Core.Library {
             var directories = _mediaCollectionContext.Directories.ToList();
             foreach(var directory in directories) {
                 Console.WriteLine("Scanning {0}...", directory.DirectoryPath);
-                OmdbClient omdbClient = new OmdbClient();
                 DirectoryInfo DirInfo = new DirectoryInfo(directory.DirectoryPath);
 
                 var movieDirectories = DirInfo.EnumerateDirectories();
                 
                 foreach(var d in movieDirectories) {
                     Console.WriteLine("Found movie directory: {0}...", d.FullName);
-                    await AddMovie(omdbClient, d.FullName);
+                    await AddMovie(d.FullName);
                     Console.WriteLine("--------------");
                 } 
                 await _mediaCollectionContext.SaveChangesAsync();
@@ -62,8 +63,8 @@ namespace Silverscreen.Core.Library {
             return _mediaCollectionContext.Directories.Select(d => d.DirectoryPath).ToList();
         }
 
-        private async Task AddMovie(OmdbClient omdbClient, string directory) {
-            var movie = await CorrelateVideoToMetadata(omdbClient, directory);
+        private async Task AddMovie(string directory) {
+            var movie = await CorrelateVideoToMetadata(directory);
             if(movie != null) {
                 movie.inLibrary = true;
                 _mediaCollectionContext.Movies.Add(movie); //add new Movie to library/update if it exists
@@ -75,7 +76,7 @@ namespace Silverscreen.Core.Library {
             }
         }
 
-        private async Task<Movie> CorrelateVideoToMetadata(OmdbClient omdbClient, string directory) {
+        private async Task<Movie> CorrelateVideoToMetadata(string directory) {
             //parse title and year from directory.FullName
             var movieData = _parserService.ParseMovie(directory);
 
@@ -83,7 +84,7 @@ namespace Silverscreen.Core.Library {
             if(movieData != null) 
             {
                 Console.WriteLine("Fetching metadata for {0} ({1})", movieData.Title, movieData.Year);
-                var movie = await FetchMovieMetadata(omdbClient, movieData.Title, movieData.Year);
+                var movie = await FetchMovieMetadata(movieData.Title, movieData.Year);
                 if(movie != null) 
                 {
                     return movie;
@@ -100,13 +101,13 @@ namespace Silverscreen.Core.Library {
             }
         }
 
-        private async Task<Movie> FetchMovieMetadata(OmdbClient omdbClient, string title, string year) {
+        private async Task<Movie> FetchMovieMetadata(string title, string year) {
             Metadata metadata = null;
 
             if(year == "")
-                metadata = await omdbClient.GetMetadata(title);
+                metadata = await _omdbClient.GetMetadata(title);
             else 
-                metadata = await omdbClient.GetMetadata(title, year);
+                metadata = await _omdbClient.GetMetadata(title, year);
 
             if(metadata != null) 
             {

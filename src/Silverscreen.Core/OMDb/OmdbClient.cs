@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace Silverscreen.Core.OMDb
 {
-    public class OmdbClient
+    public class OmdbClient : IOmdbClient
     {
         const string omdbUrl = "https://www.omdbapi.com/"; // Base omdb api URL, https seems to be slow
         public string omdbKey; // A key is required for poster images.

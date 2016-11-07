@@ -12,6 +12,7 @@ using Silverscreen.Core.Wishlist;
 using Silverscreen.Core.Parser;
 using Silverscreen.Core.Renamer;
 using Silverscreen.Core.Model;
+using Silverscreen.Core.OMDb;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -55,6 +56,7 @@ namespace Silverscreen.API
             services.TryAddSingleton<ILibraryService, LibraryService>();
             services.TryAddSingleton<IWishlistService, WishlistService>();
             services.TryAddSingleton<IRenamerService, RenamerService>();
+            services.TryAddTransient<IOmdbClient, OmdbClient>();
             
         }
 

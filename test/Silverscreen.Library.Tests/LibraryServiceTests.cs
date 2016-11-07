@@ -5,6 +5,7 @@ using System.Linq;
 using Silverscreen.Core.Library;
 using Silverscreen.Core.Model;
 using Silverscreen.Core.Parser;
+using Silverscreen.Core.OMDb;
 using Xunit;
 using System;
 using System.Net;
@@ -12,6 +13,7 @@ using System.Net;
 namespace Silverscreen.Library.Tests {
 
     public class LibraryServiceTests {
+
         public LibraryServiceTests() {
             NetworkCredential credentials = new NetworkCredential("admin", "");
             CredentialCache netCache = new CredentialCache();
@@ -19,12 +21,12 @@ namespace Silverscreen.Library.Tests {
             Console.WriteLine("Added Credentials");
         }
 
-        private static DbContextOptions<LibraryContext> CreateNewContextOptions() {
+        private static DbContextOptions<MediaCollectionContext> CreateNewContextOptions() {
             var serviceProvider = new ServiceCollection()
                 .AddEntityFrameworkInMemoryDatabase()
                 .BuildServiceProvider();
 
-            var builder = new DbContextOptionsBuilder<LibraryContext>();
+            var builder = new DbContextOptionsBuilder<MediaCollectionContext>();
             builder.UseInMemoryDatabase()
                 .UseInternalServiceProvider(serviceProvider);
 
@@ -36,10 +38,11 @@ namespace Silverscreen.Library.Tests {
         {
             var options = CreateNewContextOptions();
 
-            using(var context = new LibraryContext(options))
+            using(var context = new MediaCollectionContext(options))
             {
                 var parser = new ParserService();
-                var service = new LibraryService(context, parser);
+                var omdbClient = new OmdbClient();
+                var service = new LibraryService(context, parser, omdbClient);
                 var directory = await service.AddDirectory(@"\\Plex\Movies");
                 Assert.Equal(context.Directories.FirstOrDefault().DirectoryPath, "\\\\Plex\\Movies"); //ensure we're passing the correct string
             }
@@ -50,10 +53,11 @@ namespace Silverscreen.Library.Tests {
         {
             var options = CreateNewContextOptions();
 
-            using(var context = new LibraryContext(options))
+            using(var context = new MediaCollectionContext(options))
             {
                 var parser = new ParserService();
-                var service = new LibraryService(context, parser);
+                var omdbClient = new OmdbClient();
+                var service = new LibraryService(context, parser, omdbClient);
                 await service.AddDirectory(@"\\Plex\Movies");
                 await service.ScanLibrary();
                 Console.WriteLine("Found {0} movies.", context.Movies.Count());
@@ -66,10 +70,11 @@ namespace Silverscreen.Library.Tests {
         {
             var options = CreateNewContextOptions();
 
-            using (var context = new LibraryContext(options))
+            using (var context = new MediaCollectionContext(options))
             {
                 var parser = new ParserService();
-                var service = new LibraryService(context, parser);
+                var omdbClient = new OmdbClient();
+                var service = new LibraryService(context, parser, omdbClient);
                 await service.AddDirectory(@"C:\Users\Tim\Documents\GitHub\silverscreen\test\TestData\Videos");
                 await service.ScanLibrary();
                 Assert.Equal(context.Movies.Count(), 3);
