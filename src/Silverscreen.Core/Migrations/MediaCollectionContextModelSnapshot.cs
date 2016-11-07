@@ -7,8 +7,8 @@ using Silverscreen.Core.Model;
 
 namespace Silverscreen.Core.Migrations
 {
-    [DbContext(typeof(LibraryContext))]
-    partial class LibraryContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(MediaCollectionContext))]
+    partial class MediaCollectionContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

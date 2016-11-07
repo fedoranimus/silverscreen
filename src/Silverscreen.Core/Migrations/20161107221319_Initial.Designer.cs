@@ -7,8 +7,8 @@ using Silverscreen.Core.Model;
 
 namespace Silverscreen.Core.Migrations
 {
-    [DbContext(typeof(LibraryContext))]
-    [Migration("20161106215729_Initial")]
+    [DbContext(typeof(MediaCollectionContext))]
+    [Migration("20161107221319_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

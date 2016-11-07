@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 
 namespace Silverscreen.Core.Model {
-    public class LibraryContext : DbContext  {
-        public LibraryContext (DbContextOptions<LibraryContext> options) : base(options) 
+    public class MediaCollectionContext : DbContext  {
+        public MediaCollectionContext (DbContextOptions<MediaCollectionContext> options) : base(options) 
         {
 
         }

@@ -9,37 +9,37 @@ using Silverscreen.Core.Parser;
 
 namespace Silverscreen.Core.Library {
     public class LibraryService : ILibraryService {
-        private readonly LibraryContext _libraryContext;
+        private readonly MediaCollectionContext _mediaCollectionContext;
         private readonly IParserService _parserService;
-        public LibraryService(LibraryContext libraryContext, IParserService parserService) {
-            _libraryContext = libraryContext;
+        public LibraryService(MediaCollectionContext mediaCollectionContext, IParserService parserService) {
+            _mediaCollectionContext = mediaCollectionContext;
             _parserService = parserService;
         }
 
-        public LibraryContext GetLibrary(){
-            return _libraryContext; //maybe just return metadata?
+        public MediaCollectionContext GetLibrary(){
+            return _mediaCollectionContext; //maybe just return metadata?
         }
 
         public List<Movie> GetMovies() {
-            return _libraryContext.Movies.Where(m => m.inLibrary == true).ToList(); //only get the movies in the library
+            return _mediaCollectionContext.Movies.Where(m => m.inLibrary == true).ToList(); //only get the movies in the library
         }
 
         public Movie GetMovie(int id)
         {
-            return _libraryContext.Movies.Where(m => m.Id == id).FirstOrDefault();
+            return _mediaCollectionContext.Movies.Where(m => m.Id == id).FirstOrDefault();
         }
 
         public async Task<LibraryDirectory> AddDirectory(string path) {
             var directory = new LibraryDirectory(path);
             Console.WriteLine("Adding {0} as {1}", path, directory.DirectoryPath);
-            _libraryContext.Directories.Add(directory);
-            await _libraryContext.SaveChangesAsync();
+            _mediaCollectionContext.Directories.Add(directory);
+            await _mediaCollectionContext.SaveChangesAsync();
             return directory;
         }
 
         public async Task ScanLibrary() {
             Console.WriteLine("Starting Library Scan...");
-            var directories = _libraryContext.Directories.ToList();
+            var directories = _mediaCollectionContext.Directories.ToList();
             foreach(var directory in directories) {
                 Console.WriteLine("Scanning {0}...", directory.DirectoryPath);
                 OmdbClient omdbClient = new OmdbClient();
@@ -52,21 +52,21 @@ namespace Silverscreen.Core.Library {
                     await AddMovie(omdbClient, d.FullName);
                     Console.WriteLine("--------------");
                 } 
-                await _libraryContext.SaveChangesAsync();
+                await _mediaCollectionContext.SaveChangesAsync();
                 Console.WriteLine("Number of subdirectories is {0}", directories.Count());
                 Console.WriteLine("{0} scan complete.", directory.DirectoryPath);
             }
         }
 
         public List<string> GetDirectories() {
-            return _libraryContext.Directories.Select(d => d.DirectoryPath).ToList();
+            return _mediaCollectionContext.Directories.Select(d => d.DirectoryPath).ToList();
         }
 
         private async Task AddMovie(OmdbClient omdbClient, string directory) {
             var movie = await CorrelateVideoToMetadata(omdbClient, directory);
             if(movie != null) {
                 movie.inLibrary = true;
-                _libraryContext.Movies.Add(movie); //add new Movie to library/update if it exists
+                _mediaCollectionContext.Movies.Add(movie); //add new Movie to library/update if it exists
                 Console.WriteLine("Added: {0} as {1} ({2})", movie.ImdbId, movie.Title, movie.Year.ToString());
             }
             else

@@ -8,3 +8,6 @@ cd Silverscreen.Core
 `dotnet ef --startup-project ../Silverscreen.API migrations add Initial`
 
 `dotnet ef --startup-project ../Silverscreen.API database update`
+
+Remove migrations
+`dotnet ef --startup-project ../Silverscreen.API migrations remove`
