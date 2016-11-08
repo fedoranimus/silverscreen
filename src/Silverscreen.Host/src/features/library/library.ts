@@ -10,13 +10,11 @@ export class Library {
 
     }
 
-    attached() {
-        this.libraryService.getAllMovies()
-            .then( movies => {
-                this.movies = movies;
-            })
-            .catch(e => {
-                console.error(e);
-            });
+    async attached() {
+        try {
+            this.movies = await this.libraryService.getAllMovies();
+        } catch(e) {
+            console.error(e);
+        }
     }
 }
