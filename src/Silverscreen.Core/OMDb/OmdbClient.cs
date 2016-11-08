@@ -53,6 +53,11 @@ namespace Silverscreen.Core.OMDb
             return await FetchMovieMetadata(query);
         }
 
+        public async Task<Metadata> GetMetadataByImdbId(string imdbId) {
+            string query = String.Format("?i={0}", imdbId);
+            return await FetchMovieMetadata(query);
+        }
+
         public async Task<MetadataList> GetMetadataList(string query)
         {
             using (var client = new HttpClient())
