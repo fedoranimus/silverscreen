@@ -56,7 +56,7 @@ namespace Silverscreen.API
             services.TryAddSingleton<ILibraryService, LibraryService>();
             services.TryAddSingleton<IWishlistService, WishlistService>();
             services.TryAddSingleton<IRenamerService, RenamerService>();
-            services.TryAddTransient<IOmdbClient, OmdbClient>();
+            services.TryAddScoped<IOmdbClient, OmdbClient>();
             
         }
 
