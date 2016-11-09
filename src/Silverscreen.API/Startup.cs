@@ -56,8 +56,7 @@ namespace Silverscreen.API
             services.TryAddSingleton<ILibraryService, LibraryService>();
             services.TryAddSingleton<IWishlistService, WishlistService>();
             services.TryAddSingleton<IRenamerService, RenamerService>();
-            services.TryAddScoped<IOmdbClient, OmdbClient>();
-            
+            services.TryAddScoped<IOmdbClient, OmdbClient>();    
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
