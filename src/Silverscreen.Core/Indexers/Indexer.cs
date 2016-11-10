@@ -1,8 +1,19 @@
+using System.Collections.Generic;
+using Silverscreen.Core.Model;
+
 namespace Silverscreen.Core.Indexers {
     public class Indexer : IIndexer {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public bool RssEnabled { get; set; }
+        public bool SearchEnabled { get; set; }
+        public DownloadProtocol Protocol { get; set; }
+        public string ApiUrl { get; set; }
+        public string ApiKey { get; set; }
 
+        public List<int> Categories { get; set; }
+        public Indexer() {
+
+        }
     }
 }
-
-//https://api.dognzb.cr/api?apikey=1e1592a7ff097403fddb9c51978b4e5b&t=movie&imdbid=0088763
-//Usenet API Docs: http://newznab.readthedocs.io/en/latest/misc/api/#movie-search

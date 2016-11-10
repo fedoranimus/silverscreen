@@ -13,6 +13,7 @@ using Silverscreen.Core.Parser;
 using Silverscreen.Core.Renamer;
 using Silverscreen.Core.Model;
 using Silverscreen.Core.OMDb;
+using Silverscreen.Core.Indexers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -36,6 +37,10 @@ namespace Silverscreen.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddOptions();
+            services.AddLogging();
+
             // Configure CORS
             var corsBuilder = new CorsPolicyBuilder();
             corsBuilder.AllowAnyHeader();
@@ -46,17 +51,18 @@ namespace Silverscreen.API
                 options.AddPolicy("Silverscreen", corsBuilder.Build());
             });
 
+            var connection = @"Server=(localdb)\mssqllocaldb;Database=Silverscreen;Trusted_Connection=True;"; //should pull this out
+            services.AddDbContext<MediaCollectionContext>(options => options.UseSqlServer(connection));
+
             // Add framework services.
             services.AddMvc();
-
-            var connection = @"Server=(localdb)\mssqllocaldb;Database=Silverscreen;Trusted_Connection=True;";
-            services.AddDbContext<MediaCollectionContext>(options => options.UseSqlServer(connection));
 
             services.TryAddSingleton<IParserService, ParserService>();
             services.TryAddSingleton<ILibraryService, LibraryService>();
             services.TryAddSingleton<IWishlistService, WishlistService>();
             services.TryAddSingleton<IRenamerService, RenamerService>();
-            services.TryAddScoped<IOmdbClient, OmdbClient>();    
+            services.TryAddScoped<IOmdbClient, OmdbClient>();  
+            services.TryAddSingleton<IIndexerService, IndexerService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

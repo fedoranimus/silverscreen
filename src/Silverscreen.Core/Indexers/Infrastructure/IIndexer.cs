@@ -1,7 +1,8 @@
-namespace Silverscreen.Core.Indexers
+using Silverscreen.Core.Model;
+
+namespace Silverscreen.Core.Indexers 
 {
-    public interface IIndexer
-    {
+    public interface IIndexer : IEntityBase {
         
     }
 }
