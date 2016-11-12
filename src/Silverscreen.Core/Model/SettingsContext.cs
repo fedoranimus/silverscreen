@@ -23,6 +23,10 @@ namespace Silverscreen.Core.Model {
 
         public DbSet<DownloadClientDefinition> DownloadClientDefinitions { get; set; }
 
+        public DbSet<Profile> Profiles { get; set; }
+
+        public DbSet<QualityDefinition> QualityDefinitions { get; set; }
+
     }
 }
 
