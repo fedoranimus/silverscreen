@@ -20,7 +20,7 @@ namespace Silverscreen.Core.OMDb
 
         private async Task<Metadata> FetchMovieMetadata(string query)
         {
-            using (var client = new HttpClient())
+            using (var client = new HttpClient()) //shouldn't I be able to inject this?
             {
                 client.BaseAddress = new Uri(omdbUrl);
                 client.DefaultRequestHeaders.Accept.Clear();

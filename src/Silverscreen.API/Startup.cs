@@ -53,6 +53,7 @@ namespace Silverscreen.API
 
             var connection = @"Server=(localdb)\mssqllocaldb;Database=Silverscreen;Trusted_Connection=True;"; //should pull this out
             services.AddDbContext<MediaCollectionContext>(options => options.UseSqlServer(connection));
+            services.AddDbContext<SettingsContext>(options => options.UseSqlServer(connection));
 
             // Add framework services.
             services.AddMvc();

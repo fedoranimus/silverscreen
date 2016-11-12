@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Silverscreen.Core.Indexers;
-//using Silverscreen.Core.DownloadClient;
+using Silverscreen.Core.Download;
 
 namespace Silverscreen.Core.Model {
     public class MediaCollectionContext : DbContext  {
@@ -21,11 +21,6 @@ namespace Silverscreen.Core.Model {
         }
         public DbSet<LibraryDirectory> Directories { get; set; }
         public DbSet<Movie> Movies { get; set; }
-
-        public DbSet<Indexer> Indexers { get; set; }
-
-        //public DbSet<DownloadClient> DownloadClients { get; set; }
-
     }
 }
 

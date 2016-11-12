@@ -1,14 +1,34 @@
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Silverscreen.Core.Model;
 
 namespace Silverscreen.Core.Indexers {
     public class IndexerService : IIndexerService
     {
+        private readonly HttpClient _httpClient;
+        public IndexerService(HttpClient httpClient)
+        {
+            _httpClient = httpClient;
+        }
         private List<Indexer> _indexers { get; set; }
         public async Task<List<DownloadCandidate>> GetCandidates(string imdbId) 
         {
-            return new List<DownloadCandidate>();
+            List<DownloadCandidate> candidates = new List<DownloadCandidate>();
+
+            foreach(var indexer in _indexers) {
+                var query = string.Format("https://{0}/api?apikey={1}&t=movie&imdbid={2}&o=JSON", indexer.ApiUrl, indexer.ApiKey, imdbId);
+                var response = await _httpClient.GetAsync(query);
+                if(response.IsSuccessStatusCode)
+                {
+                    var data = await response.Content.ReadAsStringAsync();
+                    //var movieCandidates = await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<List<ReleaseCandidate>>(data));
+                    //candidates.AddRange(movieCandidates);
+                }
+            }
+
+            return candidates;
         }
 
         public List<Indexer> GetIndexers() 
